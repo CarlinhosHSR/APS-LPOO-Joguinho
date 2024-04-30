@@ -6,6 +6,12 @@ public class LogicaDoGame {
 
     public static boolean oJogoEstaRodando;
 
+    // Elementos da Historia
+    public static int numLocalizacao = 0, ato;
+
+    // Esse Array localizacao vai armazenar os locais em que a historia acontece
+    public static String[] localizacao = {"Parques", "Ruas", "A gente decide depois"};
+
     // Método para o usuario fazer as entradas no Console
     public static int lerInt(String menu, int escolhaUsuario){
         int input;
@@ -44,7 +50,7 @@ public class LogicaDoGame {
         separarPrint(30);
     }
 
-    // Método para o jogo aguardar a entrada do usuario
+    // Método para o jogo aguardar o click do usuario para continuar
     public static void aguardarUsuario(){
         System.out.println("\n Pressione qualquer tecla para continuar...");
         leitura.next();
@@ -80,7 +86,14 @@ public class LogicaDoGame {
             }
         }while (!nameSet);
 
+        // Printando a Intro da Historia
+        Historia.printarIntro();
+
+        // Criando um novo jogador com um nome definido
         jogador = new Jogador(nome);
+
+        //Printando o inicio do primeiro Ato da Historia
+        Historia.printarPrimeiroAtoInicio();
 
         // Coloque a variavel oJogoEstaRodando como true, para que o loopDoGame continue
         oJogoEstaRodando = true;
@@ -89,10 +102,7 @@ public class LogicaDoGame {
         loopDoGame();
     }
 
-    // Método para continuar a Aventura
-    public static void clickParaContinuarAventura(){
 
-    }
     // Printando as informações principais do Jogador
     public static void informacoesDoPersonagem(){
         limpaConsole();
@@ -100,22 +110,24 @@ public class LogicaDoGame {
         System.out.println(jogador.nome + "\tHP: " + jogador.hp + "/" + jogador.maxHp);
         separarPrint(20);
         System.out.println("XP: " + jogador.xp);
+        separarPrint(20);
 
         // Printando as habilidades escolhidas do Jogador
         if(jogador.numAtkUpgrades > 0){
-            System.out.println("Habilidades Ofensivas: " + jogador.atkUpgrades[jogador.numAtkUpgrades]);
+            System.out.println("Habilidades Ofensivas: " + jogador.atkUpgrades[jogador.numAtkUpgrades - 1]);
             separarPrint(20);
         }
         if(jogador.numDefUpgrades > 0){
-            System.out.println("Habilidades Defensivas: " + jogador.defUpgrades[jogador.numDefUpgrades]);
+            System.out.println("Habilidades Defensivas: " + jogador.defUpgrades[jogador.numDefUpgrades - 1]);
         }
-        clickParaContinuarAventura();
+
+        aguardarUsuario();
     }
 
     // Pritando o menu principal
     public static void printMenu(){
         limpaConsole();
-        printMenu();
+        printarValor(localizacao[numLocalizacao]);
         System.out.println("Escolha uma ação:");
         separarPrint(20);
         System.out.println("(1) Continue sua jornada");
@@ -129,7 +141,7 @@ public class LogicaDoGame {
             printMenu();
             int input = lerInt("-> ", 3);
             if(input == 1){
-                clickParaContinuarAventura();
+                aguardarUsuario();
             }
             else if(input == 2){
                 informacoesDoPersonagem();
