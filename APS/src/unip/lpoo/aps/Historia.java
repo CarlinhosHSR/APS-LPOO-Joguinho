@@ -116,6 +116,9 @@ public class Historia {
         Na forma que está escrito o código hoje 30/04 12:48h, se for colocado um novo ato é necessario ir
         na classe LogicaDoGame e acrescentar, a logica para o novo ato, usando o final do ato anterior
         o level up do personagem, a nova localização e usar o inicio do novo ato, ou ato final.
+
+        // Tambem é necessario ir na classe LogicaDoGame é alterar o if no método de "fugir" da batalha com o total de arcos, para não ser possivel fugir da batalha final.
+
      */
 
     public static void printarFinalDoGame(Jogador jogador){

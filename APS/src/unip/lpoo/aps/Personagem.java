@@ -10,7 +10,7 @@ public abstract class Personagem {
         this.nome = nome;
         this.maxHp = maxHp;
         this.xp = xp;
-        this.hp = hp;
+        this.hp = maxHp;
     }
 
     // Métodos que todos os personagens tem que ter!

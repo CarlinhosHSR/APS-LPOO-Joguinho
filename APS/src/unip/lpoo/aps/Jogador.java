@@ -20,12 +20,12 @@ public class Jogador extends Personagem{
 
     @Override
     public int atacar() {
-        return 0;
+        return (int) (Math.random()*(xp/4 + numAtkUpgrades*3 + 3) + xp/10 + numAtkUpgrades*2 + numDefUpgrades + 1);
     }
 
     @Override
     public int defender() {
-        return 0;
+        return (int) (Math.random()*(xp/4 + numDefUpgrades*3 + 3) + xp/10 + numDefUpgrades*2 + numDefUpgrades + 1);
     }
     // Deixa o jogar qualquer escolher qual caracteristica quer
     public void escolheHabilidade(){

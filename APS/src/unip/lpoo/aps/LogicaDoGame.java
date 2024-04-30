@@ -7,7 +7,7 @@ public class LogicaDoGame {
     public static boolean oJogoEstaRodando;
 
     // Encontros ou acontecimentos aleatorios
-    public static String[] encontroAleatorio = {"Batalha", "Batalha", "Batalha", "Descanso", "Descanso"};
+    public static String[] encontroAleatorio = {"Batalha", "Batalha", "Batalha", "Batalha", "Batalha"};
 
     // Nome dos Inimigos
     public static String[] inimigos = {"Empresario Safado", "Rato Leptospiroso", "Capivara Filó", "Dona Largatixa", "Xana Calanga"};
@@ -186,7 +186,7 @@ public class LogicaDoGame {
 
         // Chamando os método dos encontros aleatorios
         if(encontroAleatorio[aleatorio].equals("Batalha")){
-            //batalhaAleatoria();
+            batalhaAleatoria();
         }
         else if(encontroAleatorio[aleatorio].equals("Descanso")){
             //descansar();
@@ -229,6 +229,100 @@ public class LogicaDoGame {
         aguardarUsuario();
     }
 
+    // Criando uma battle aleatoria
+    public static void batalhaAleatoria(){
+        limpaConsole();
+        printarValor("Você encontrou um inimigo maligno. Você precisa enfrentá-lo!");
+        aguardarUsuario();
+        // Criando um inimigo aleatorio
+        batalha(new Inimigo(inimigos[(int)(Math.random()*inimigos.length)], jogador.xp));
+    }
+
+    // Método da principal da Batalha
+    public static void batalha(Inimigo inimigo){
+        // Loop principal da batalha
+        while(true){
+            limpaConsole();
+            printarValor(inimigo.nome + "\nHP: " + inimigo.hp + "/" + inimigo.maxHp);
+            printarValor(jogador.nome + "\nHP: " + jogador.hp + "/" + jogador.maxHp);
+            separarPrint(20);
+            System.out.println("(1) Lutar\n(2) Usar Poção\n (3) Fugir");
+            int input = lerInt("-> ", 3);
+            // Comportamento em cada escolha do jogador
+            if(input == 1){
+                // Lutar
+                //Calculo do dano desferido, e do dano recebido do inimigo
+                int dano = jogador.atacar() - inimigo.defender();
+                int danoRecebido = inimigo.atacar() - jogador.defender();
+
+                // Checando se o dano feito e recebido não é zero
+                if (danoRecebido < 0){
+                    // Adicionando algum dano caso o jogador consiga uma defesa perfeita
+                    dano -= danoRecebido/2;
+                    danoRecebido = 0;
+                }
+                if(dano < 0){
+                    dano = 0;
+                }
+                // dano distribuido na batalha
+                jogador.hp -= danoRecebido;
+                inimigo.hp -= dano;
+
+                // Printando as informações do round da batalha
+                limpaConsole();
+                printarValor("BATALHA");
+                System.out.println("Você deu " + dano + " de Dano em " + inimigo.nome + ".");
+                System.out.println(inimigo.nome + " deu " + danoRecebido + " de dano em você");
+                aguardarUsuario();
+
+                // Checando se o Jogador ainda está vivo
+                if(jogador.hp <= 0){
+                    jogadorMorreu(); //Método de end game
+                    break;
+                }
+                else if(inimigo.hp <= 0){
+                    // Mostrando ao jogador que ele ganhou a batalha!
+                    limpaConsole();
+                    printarValor("Você derrotou " + inimigo.nome + "!");
+                    // Aumentando o xp do jogador
+                    jogador.xp += inimigo.xp;
+                    System.out.println("Você ganhou " + inimigo.xp + " XP!");
+                    aguardarUsuario();
+                    break;
+                }
+            }
+            else if(input == 2){
+                // Usar poção
+                // Ainda vai ser implementado
+            }
+            else {
+                // Fugir
+                limpaConsole();
+
+                // Checando se o jogaodr não está na batalha final
+                if (ato != 4) {
+                    // Chance de 33% de fugir da batalha,
+                    if (Math.random() * 10 + 1 <= 3.5) {
+                        printarValor("Você conseguiu fugir de " + inimigo.nome + "!");
+                        break;
+                    } else {
+                        printarValor("Você não conseguiu fugir.");
+                        // Calculando o dano recebido após falhar a fuga
+                        int danoRecebido = inimigo.atacar();
+                        System.out.println("Nessa falha tentavida vocÊ recebeu " + danoRecebido + " de dano!");
+                        aguardarUsuario();
+                        if (jogador.hp <= 0) {
+                            jogadorMorreu();
+                        }
+                    }
+                } else {
+                    printarValor("Você não pode fugir do Chefe final!");
+                    aguardarUsuario();
+                }
+            }
+        }
+    }
+
     // Pritando o menu principal
     public static void printMenu(){
         limpaConsole();
@@ -240,13 +334,21 @@ public class LogicaDoGame {
         System.out.println("(3) Sair do Jogo");
     }
 
+    // Método chamado quando o jogador morre
+    public static void jogadorMorreu(){
+        printarValor("Você morreu...");
+        printarValor("Você ganhou " + jogador.xp + " de XP na sua jornada. Tente ganhar mais na proxima vez!");
+        System.out.println("Obrigado por jogar nosso jogo! Espero que tenha gostado :)");
+        oJogoEstaRodando = false;
+    }
+
     // Loop do Jogo
     public static void loopDoGame(){
         while (oJogoEstaRodando) {
             printMenu();
             int input = lerInt("-> ", 3);
             if(input == 1){
-                aguardarUsuario();
+                continuarAventura();
             }
             else if(input == 2){
                 informacoesDoPersonagem();

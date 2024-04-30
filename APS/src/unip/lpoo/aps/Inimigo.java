@@ -15,11 +15,11 @@ public class Inimigo extends Personagem{
     //Ataque e defesa especifico de cada inimigo
     @Override
     public int atacar() {
-        return 0;
+        return (int) (Math.random()*(xpJogador/4 + 1) + xp/4 + 3);
     }
 
     @Override
     public int defender() {
-        return 0;
+        return (int) (Math.random()*(xpJogador/4 + 1) + xp/4 + 3);
     }
 }
