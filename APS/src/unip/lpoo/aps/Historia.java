@@ -83,9 +83,39 @@ public class Historia {
         LogicaDoGame.aguardarUsuario();
     }
 
+    public static void printarQuartoAtoInicio(){
+        LogicaDoGame.limpaConsole();
+        LogicaDoGame.separarPrint(30);
+        System.out.println("Ato 4 - Inicio do Quarto Ato");
+        LogicaDoGame.separarPrint(30);
+        System.out.println("Placeholder do Inicio do Ato 4 !!!");
+        System.out.println("Placeholder da Historia!!!!");
+        System.out.println("Placeholder da Historia!!!!!");
+        LogicaDoGame.aguardarUsuario();
+    }
+
+    public static void printarQuartoAtoFinal(){
+        LogicaDoGame.limpaConsole();
+        LogicaDoGame.separarPrint(30);
+        System.out.println("Ato 4 - Final do quarto Ato");
+        LogicaDoGame.separarPrint(30);
+        System.out.println("Placeholder do final do Ato 4 !!!");
+        System.out.println("Placeholder da Historia!!!!");
+        System.out.println("Placeholder da Historia!!!!!");
+        LogicaDoGame.aguardarUsuario();
+    }
+
     /*
         Se for necessario colocar mais atos na historia, não tem problema, é so manter o "public static void" colocar o nome da classe nesse formato
-        "printarQuartoAtoInicio" dessa forma fica facil de entender oq está sendo feito, e mantem o padrão original.
+        "printarQuintoAtoInicio" dessa forma fica facil de entender oq está sendo feito, e mantem o padrão original.
+
+        E tbm é necessario tbm alterar a quantidade de atos dentro do if do LogicaDoGame continuarAventura(), para garantir que dentro do ato final
+        não tenha encontros aleatorios, o ato final é da batalha final, não de inimigos aleatorios.
+        Esse valor é um int, e só precisa colocar a quantidade de atos que o jogo tem.
+
+        Na forma que está escrito o código hoje 30/04 12:48h, se for colocado um novo ato é necessario ir
+        na classe LogicaDoGame e acrescentar, a logica para o novo ato, usando o final do ato anterior
+        o level up do personagem, a nova localização e usar o inicio do novo ato, ou ato final.
      */
 
     public static void printarFinalDoGame(Jogador jogador){

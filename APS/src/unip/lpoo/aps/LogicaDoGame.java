@@ -6,8 +6,14 @@ public class LogicaDoGame {
 
     public static boolean oJogoEstaRodando;
 
+    // Encontros ou acontecimentos aleatorios
+    public static String[] encontroAleatorio = {"Batalha", "Batalha", "Batalha", "Descanso", "Descanso"};
+
+    // Nome dos Inimigos
+    public static String[] inimigos = {"Empresario Safado", "Rato Leptospiroso", "Capivara Filó", "Dona Largatixa", "Xana Calanga"};
+
     // Elementos da Historia
-    public static int numLocalizacao = 0, ato;
+    public static int numLocalizacao = 0, ato = 1;
 
     // Esse Array localizacao vai armazenar os locais em que a historia acontece
     public static String[] localizacao = {"Parques", "Ruas", "A gente decide depois"};
@@ -100,6 +106,105 @@ public class LogicaDoGame {
 
         // Começar o loop do Jogo
         loopDoGame();
+    }
+
+    // Método que muda os valores do game, baseado no nivel de xp do jogador
+    public static void checarAto(){
+        // Muda o ato baseado na quantidade de xp do jogador
+        if (jogador.xp >= 10 && ato == 1){
+            // Incrementa o ato e o local
+            ato = 2;
+            numLocalizacao = 1;
+            // Final do primeito ato da Historia
+            Historia.printarPrimeiroAtoFinal();
+            // Jogador sobi de nivel
+            jogador.escolheHabilidade();
+            // Inicio do segundo ato da Historia
+            Historia.printarSegundoAtoInicio();
+            // Colocando novos valores para inimigos
+            inimigos[0] = "Mercenario";
+            inimigos[1] = "Ogro";
+            inimigos[2] = "Pitbull";
+            inimigos[3] = "Manual Gomes";
+            inimigos[4] = "Pinscher";
+            // Colocando novos valores para encontros
+            encontroAleatorio[0] = "Batalha";
+            encontroAleatorio[1] = "Batalha";
+            encontroAleatorio[2] = "Batalha";
+            encontroAleatorio[3] = "Descanso";
+            encontroAleatorio[4] = "Loja";
+            // Recuperando a vida do jogador após a finalização do ato
+            jogador.hp = jogador.maxHp;
+        }
+        else if(jogador.xp >= 50 && ato == 2){
+            // Incrementa o ato e o local
+            ato = 3;
+            numLocalizacao = 2;
+            // Final do segundo ato
+            Historia.printarSegundoAtoFinal();
+            // Jogador sobi de nivel
+            jogador.escolheHabilidade();
+            // Inicio do Terceiro ato
+            Historia.printarTerceiroAtoInicio();
+            // Colocando novos valores para inimigos
+            inimigos[0] = "Mercenario";
+            inimigos[1] = "Vira-Lata Caramelo";
+            inimigos[2] = "Pinscher";
+            inimigos[3] = "Manual Gomes";
+            inimigos[4] = "Pinscher";
+            // Colocando novos valores para encontros
+            encontroAleatorio[0] = "Batalha";
+            encontroAleatorio[1] = "Batalha";
+            encontroAleatorio[2] = "Batalha";
+            encontroAleatorio[3] = "Descanso";
+            encontroAleatorio[4] = "Loja";
+            // Recuperando a vida do jogador após a finalização do ato
+            jogador.hp = jogador.maxHp;
+        }
+        else if (jogador.xp >= 100 && ato == 3) {
+            // Incrementa o ato e o local
+            ato = 4;
+            numLocalizacao = 3;
+            // Final do terceiro ato
+            Historia.printarTerceiroAtoFinal();
+            // Jogador sobi de nivel
+            jogador.escolheHabilidade();
+            // Inicio do Quarto ato
+            Historia.printarQuartoAtoInicio();
+            // Recuperando a vida do jogador após a finalização do ato
+            jogador.hp = jogador.maxHp;
+
+            // Iniciando a Batalha final!!
+            // batalhaFinal();
+        }
+    }
+
+    // Método que calcula uma chance de encontro aleatoria
+    public static void chanceEncontroAleatorio(){
+        // Isso calcula um numero aleatorio entre 0 e tamanho total do vetor encontroAleatorio
+        int aleatorio = (int) (Math.random() * encontroAleatorio.length);
+
+        // Chamando os método dos encontros aleatorios
+        if(encontroAleatorio[aleatorio].equals("Batalha")){
+            //batalhaAleatoria();
+        }
+        else if(encontroAleatorio[aleatorio].equals("Descanso")){
+            //descansar();
+        }
+        else{
+            //loja();
+        }
+    }
+
+    // Método para continuar a aventura
+    public static void continuarAventura(){
+        //Checando se o ato precisa ser acrescentado, para ato 2 ou 3 por exemplo
+        checarAto();
+        // Checando se o jogo já não está no ato final
+        // Importante se o numero de atos mudar é necessario trocar esse valor dentro do if
+        if(ato != 4){
+            chanceEncontroAleatorio();
+        }
     }
 
 

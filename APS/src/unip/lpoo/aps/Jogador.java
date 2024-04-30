@@ -15,7 +15,7 @@ public class Jogador extends Personagem{
         this.numAtkUpgrades = 0;
         this.numDefUpgrades = 0;
         // O Jogador escolhe quais caracteristicas quer ter ao criar um novo personagem
-        escolherCaracteristica();
+        escolheHabilidade();
     }
 
     @Override
@@ -28,7 +28,7 @@ public class Jogador extends Personagem{
         return 0;
     }
     // Deixa o jogar qualquer escolher qual caracteristica quer
-    public void escolherCaracteristica(){
+    public void escolheHabilidade(){
         LogicaDoGame.limpaConsole();
         LogicaDoGame.printarValor("Escolha sua caracteristica: ");
         System.out.println("(1) " + atkUpgrades[numAtkUpgrades]);
