@@ -4,6 +4,8 @@ public class LogicaDoGame {
     static Scanner leitura = new Scanner(System.in);
     static Jogador jogador;
 
+    public static boolean oJogoEstaRodando;
+
     // Método para o usuario fazer as entradas no Console
     public static int lerInt(String menu, int escolhaUsuario){
         int input;
@@ -80,7 +82,63 @@ public class LogicaDoGame {
 
         jogador = new Jogador(nome);
 
-        // !EM TESTES! start main game loop
-        // gameLoop();
+        // Coloque a variavel oJogoEstaRodando como true, para que o loopDoGame continue
+        oJogoEstaRodando = true;
+
+        // Começar o loop do Jogo
+        loopDoGame();
+    }
+
+    // Método para continuar a Aventura
+    public static void clickParaContinuarAventura(){
+
+    }
+    // Printando as informações principais do Jogador
+    public static void informacoesDoPersonagem(){
+        limpaConsole();
+        printarValor("Informações do Jogador");
+        System.out.println(jogador.nome + "\tHP: " + jogador.hp + "/" + jogador.maxHp);
+        separarPrint(20);
+        System.out.println("XP: " + jogador.xp);
+
+        // Printando as habilidades escolhidas do Jogador
+        if(jogador.numAtkUpgrades > 0){
+            System.out.println("Habilidades Ofensivas: " + jogador.atkUpgrades[jogador.numAtkUpgrades]);
+            separarPrint(20);
+        }
+        if(jogador.numDefUpgrades > 0){
+            System.out.println("Habilidades Defensivas: " + jogador.defUpgrades[jogador.numDefUpgrades]);
+        }
+        clickParaContinuarAventura();
+    }
+
+    // Pritando o menu principal
+    public static void printMenu(){
+        limpaConsole();
+        printMenu();
+        System.out.println("Escolha uma ação:");
+        separarPrint(20);
+        System.out.println("(1) Continue sua jornada");
+        System.out.println("(2) Informações do Jogador");
+        System.out.println("(3) Sair do Jogo");
+    }
+
+    // Loop do Jogo
+    public static void loopDoGame(){
+        while (oJogoEstaRodando) {
+            printMenu();
+            int input = lerInt("-> ", 3);
+            if(input == 1){
+                clickParaContinuarAventura();
+            }
+            else if(input == 2){
+                informacoesDoPersonagem();
+            }
+            else{
+                oJogoEstaRodando = false;
+            }
+
+        }
+
     }
 }
