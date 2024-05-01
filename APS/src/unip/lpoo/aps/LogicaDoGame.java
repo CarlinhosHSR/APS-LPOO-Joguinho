@@ -175,7 +175,7 @@ public class LogicaDoGame {
             jogador.hp = jogador.maxHp;
 
             // Iniciando a Batalha final!!
-            // batalhaFinal();
+            batalhaFinal();
         }
     }
 
@@ -189,10 +189,10 @@ public class LogicaDoGame {
             batalhaAleatoria();
         }
         else if(encontroAleatorio[aleatorio].equals("Descanso")){
-            //descansar();
+            descansar();
         }
         else{
-            //loja();
+            loja();
         }
     }
 
@@ -214,7 +214,11 @@ public class LogicaDoGame {
         printarValor("Informações do Jogador");
         System.out.println(jogador.nome + "\tHP: " + jogador.hp + "/" + jogador.maxHp);
         separarPrint(20);
-        System.out.println("XP: " + jogador.xp);
+        // Quantidade de xp e ouros do jogador
+        System.out.println("XP: " + jogador.xp + "\tOuros: " + jogador.gold);
+        separarPrint(20);
+        // numero de poções
+        System.out.println("Poções de cura: " + jogador.pocoes);
         separarPrint(20);
 
         // Printando as habilidades escolhidas do Jogador
@@ -227,6 +231,59 @@ public class LogicaDoGame {
         }
 
         aguardarUsuario();
+    }
+
+    // Criando a Lojinha do jogo
+    public static void loja(){
+        limpaConsole();
+        printarValor("Você encontra um estranho misterioso.\nEle te oferece algo:");
+        int valor = (int) (Math.random() * (10 + jogador.pocoes*3) + 10 + jogador.pocoes);
+        System.out.println("- Poção de cura: " + valor + " ouros.");
+        separarPrint(20);
+        // Perguntando ao jogador se ele quer comprar
+        System.out.println("Você quer comprar uma?\n(1) Sim!\n(2) Não, obrigado.");
+        int input = lerInt("-> ", 2);
+        if (input == 1){
+            limpaConsole();
+            //Verificando se o jogador tem dinheiro suficiente
+            if (jogador.gold >= valor){
+                printarValor("Você comprou uma poção de cura por " + valor + " ouros.");
+                jogador.pocoes++;
+                jogador.gold -= valor;
+            }
+            else{
+                printarValor("Você não tem ouro suficiente para isso...");
+            }
+            aguardarUsuario();
+        }
+    }
+
+    // Descanso do jogador
+    public static void descansar(){
+        limpaConsole();
+        if (jogador.travesseiros >= 1){
+            printarValor("Você quer descansar um pouco? (" + jogador.travesseiros + " travesseiros restantes).");
+            System.out.println("(1) Sim\n(2) Não, agora não.");
+            int input = lerInt("-> ", 3);
+            if (input == 1){
+                // Jogador escolher descansar
+                if (jogador.hp < jogador.maxHp){
+                    int hpRecuperado = (int) (Math.random() * (jogador.xp/4 + 1) + 10);
+                    jogador.hp += hpRecuperado;
+                    //Garantindo que o hp não passe do máximo, se passar volta para o máximo
+                    if (jogador.hp > jogador.maxHp){
+                        jogador.hp = jogador.maxHp;
+                    }
+                    System.out.println("Você descansou e recuperou " + hpRecuperado + " pontos de vida.");
+                    System.out.println("Agora você está com " + jogador.hp + "/" + jogador.maxHp + " pontos de vida.");
+                    jogador.travesseiros--;
+                }
+            }
+            else{
+                System.out.println("Você está com a vida cheia, não precisa descansar agora.");
+            }
+            aguardarUsuario();
+        }
     }
 
     // Criando uma battle aleatoria
@@ -287,13 +344,46 @@ public class LogicaDoGame {
                     // Aumentando o xp do jogador
                     jogador.xp += inimigo.xp;
                     System.out.println("Você ganhou " + inimigo.xp + " XP!");
+
+                    // Drops aleatorios
+                    boolean adicionarTravesseiro = (Math.random()*5 + 1 <= 2.25);
+                    int goldEncontrado = (int) (Math.random() * inimigo.xp);
+                    if (adicionarTravesseiro){
+                        jogador.travesseiros++;
+                        System.out.println("Você conseguiu um novo travesseiro!");
+                    }
+                    if (goldEncontrado > 0){
+                        jogador.gold += goldEncontrado;
+                        System.out.println("Você encontrou " + goldEncontrado + " ouros no corpo de " + inimigo.nome);
+                    }
                     aguardarUsuario();
                     break;
                 }
             }
             else if(input == 2){
                 // Usar poção
-                // Ainda vai ser implementado
+                limpaConsole();
+                if(jogador.pocoes > 0 && jogador.hp < jogador.maxHp){
+                    //Nesse caso o jogador consegue tomar poções
+                    printarValor("Você quer beber uma poção de cura? (" + jogador.pocoes + " poções disponiveis).");
+                    System.out.println("(1) Sim\n(2) Não");
+                    input = lerInt("-> ", 3);
+                    if (input == 1){
+                        // O jogador toma a poção
+                        jogador.hp = jogador.maxHp;
+                        limpaConsole();
+                        printarValor("Você tomou a poção de cura. Ela restaurou sua vida de volta para " + jogador.maxHp);
+                        aguardarUsuario();
+                    }
+                    else{
+
+                    }
+                }
+                else{
+                    //Nesse caso o jogador não consegue tomar poções
+                    printarValor("Você não tem poções disponiveis ou está com o HP cheio.");
+                    aguardarUsuario();
+                }
             }
             else {
                 // Fugir
@@ -332,6 +422,12 @@ public class LogicaDoGame {
         System.out.println("(1) Continue sua jornada");
         System.out.println("(2) Informações do Jogador");
         System.out.println("(3) Sair do Jogo");
+    }
+    //Luta final do jogo
+    public static void batalhaFinal(){
+        batalha(new Inimigo("Bonoro", 300));
+        Historia.printarFinalDoGame(jogador);
+        oJogoEstaRodando = false;
     }
 
     // Método chamado quando o jogador morre

@@ -4,6 +4,9 @@ public class Jogador extends Personagem{
     // Inteiros para guardar os upgrades/skills de cada "Caminho"
     public int numAtkUpgrades, numDefUpgrades;
 
+    //status adicionais do usuario
+    int gold, travesseiros, pocoes;
+
     // Upgrades !!Experimental!!
     public String[] atkUpgrades = {"Strenth", "Power", "Might", "Godlike Strenght"};
     public String[] defUpgrades = {"Heavy Bones", "Stoneskin", "Scale Armor", "Holy Aura"};
@@ -14,6 +17,10 @@ public class Jogador extends Personagem{
         // Colocando com nenhum upgrade inicialmente #0
         this.numAtkUpgrades = 0;
         this.numDefUpgrades = 0;
+        // Colocando os status adicionais
+        this.gold = 5;
+        this.travesseiros = 1;
+        this.pocoes = 0;
         // O Jogador escolhe quais caracteristicas quer ter ao criar um novo personagem
         escolheHabilidade();
     }

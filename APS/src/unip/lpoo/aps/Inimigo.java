@@ -6,10 +6,10 @@ public class Inimigo extends Personagem{
     int xpJogador;
 
     //Contrutor do Inimigo
-    public Inimigo(String nome, int xpJogador) {
-        super(nome, (int) (Math.random()*xpJogador + xpJogador/3 + 5), (int) (Math.random()*(xpJogador/4 + 2) + 1));
+    public Inimigo(String nome, int xpInimigo) {
+        super(nome, (int) (Math.random()*xpInimigo + xpInimigo/3 + 5), (int) (Math.random()*(xpInimigo/4 + 2) + 1));
         // Armazenando a variavel do xp do Jogador na xpJogador
-        this.xpJogador = xpJogador;
+        this.xpJogador = xpInimigo;
     }
 
     //Ataque e defesa especifico de cada inimigo
