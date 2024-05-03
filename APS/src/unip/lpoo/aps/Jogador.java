@@ -12,8 +12,8 @@ public class Jogador extends Personagem{
     public String[] defUpgrades = {"Heavy Bones", "Stoneskin", "Scale Armor", "Holy Aura"};
 
     // Contrutor do Jogador
-    public Jogador(String nome) {
-        super(nome, 100, 0);
+    public Jogador(String nome, int forca, int defesa) {
+        super(nome, 100, 0, 5, 5);
         // Colocando com nenhum upgrade inicialmente #0
         this.numAtkUpgrades = 0;
         this.numDefUpgrades = 0;

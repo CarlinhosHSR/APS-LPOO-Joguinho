@@ -68,6 +68,8 @@ public class LogicaDoGame {
     public static void IniciarGame(){
         boolean nameSet = false;
         String nome;
+        int forca = 0;
+        int defesa = 0;
         // Printando Titulo do jogo
         limpaConsole();
         separarPrint(40);
@@ -89,6 +91,22 @@ public class LogicaDoGame {
             System.out.println("(1) Sim!");
             System.out.println("(2) Não, quero mudar esse nome.");
             int input = lerInt("-> ", 2);
+            while(forca + defesa == 10){
+                printarValor("Quantos pontos em força e defesa quer colocar?\n A soma dos dois tem que totalizar 10!\n Vamos começar com Força quantos pontos quer colocar?");
+                forca = lerInt("Força -> ", 10);
+                printarValor("E em defesa?");
+                lerInt("Defesa -> ", 10);
+
+                if (forca + defesa < 10 ){
+                    limpaConsole();
+                    System.out.println("O total de força é defesa é menor que 10, coloque mais pontos em um dos atributos.");
+                    separarPrint(5);
+                } else if (forca + defesa >+ 10) {
+                    limpaConsole();
+                    System.out.println("O total de força é defesa é maior que 10, coloque menos pontos em um dos atributos.");
+                    separarPrint(5);
+                }
+            }
             if (input == 1){
                 nameSet = true;
             }
@@ -98,7 +116,7 @@ public class LogicaDoGame {
         Historia.printarIntro();
 
         // Criando um novo jogador com um nome definido
-        jogador = new Jogador(nome);
+        jogador = new Jogador(nome, forca, defesa);
 
         //Printando o inicio do primeiro Ato da Historia
         Historia.printarPrimeiroAtoInicio();

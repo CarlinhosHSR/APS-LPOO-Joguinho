@@ -3,8 +3,7 @@ package unip.lpoo.aps;
 public class Inimigo extends Personagem{
     //Variavel para guardar a quantidade atual de xp do jogador
     int xpJogador;
-    int forca;
-    int defesa;
+
 
     //Contrutor do Inimigo
     public Inimigo(String nome, int xpInimigo, int forca, int defesa) {
@@ -18,7 +17,7 @@ public class Inimigo extends Personagem{
     //Ataque e defesa especifico de cada inimigo
     @Override
     public int atacar() {
-        return (int) (Math.random()*(xpJogador/4 + 1) + xp/4 + 3);
+        return (int) (Math.random()*(((xpJogador / 3) * defPlayer)) / (Força * xp) + Força - 2) + xp/4 + 3);
     }
 
     @Override
