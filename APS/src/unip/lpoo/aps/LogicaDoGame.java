@@ -1,4 +1,6 @@
 package unip.lpoo.aps;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 public class LogicaDoGame {
     static Scanner leitura = new Scanner(System.in);
@@ -7,10 +9,10 @@ public class LogicaDoGame {
     public static boolean oJogoEstaRodando;
 
     // Encontros ou acontecimentos aleatorios
-    public static String[] encontroAleatorio = {"Batalha", "Batalha", "Batalha", "Batalha", "Batalha"};
+    public static String[] encontroAleatorio = {"Batalha", "Batalha", "Descanso", "Batalha", "Loja"};
 
-    // Nome dos Inimigos
-    public static String[] inimigos = {"Empresario Safado", "Rato Leptospiroso", "Capivara Filó", "Dona Largatixa", "Xana Calanga"};
+
+
 
     // Elementos da Historia
     public static int numLocalizacao = 0, ato = 1;
@@ -111,6 +113,7 @@ public class LogicaDoGame {
     // Método que muda os valores do game, baseado no nivel de xp do jogador
     public static void checarAto(){
         // Muda o ato baseado na quantidade de xp do jogador
+
         if (jogador.xp >= 10 && ato == 1){
             // Incrementa o ato e o local
             ato = 2;
@@ -122,11 +125,12 @@ public class LogicaDoGame {
             // Inicio do segundo ato da Historia
             Historia.printarSegundoAtoInicio();
             // Colocando novos valores para inimigos
-            inimigos[0] = "Mercenario";
+            /*inimigos[0] = "Mercenario";
             inimigos[1] = "Ogro";
             inimigos[2] = "Pitbull";
             inimigos[3] = "Manual Gomes";
-            inimigos[4] = "Pinscher";
+            inimigos[4] = "Pinscher";*/
+
             // Colocando novos valores para encontros
             encontroAleatorio[0] = "Batalha";
             encontroAleatorio[1] = "Batalha";
@@ -147,11 +151,11 @@ public class LogicaDoGame {
             // Inicio do Terceiro ato
             Historia.printarTerceiroAtoInicio();
             // Colocando novos valores para inimigos
-            inimigos[0] = "Mercenario";
+           /* inimigos[0] = "Mercenario";
             inimigos[1] = "Vira-Lata Caramelo";
             inimigos[2] = "Pinscher";
             inimigos[3] = "Manual Gomes";
-            inimigos[4] = "Pinscher";
+            inimigos[4] = "Pinscher";*/
             // Colocando novos valores para encontros
             encontroAleatorio[0] = "Batalha";
             encontroAleatorio[1] = "Batalha";
@@ -291,8 +295,27 @@ public class LogicaDoGame {
         limpaConsole();
         printarValor("Você encontrou um inimigo maligno. Você precisa enfrentá-lo!");
         aguardarUsuario();
-        // Criando um inimigo aleatorio
-        batalha(new Inimigo(inimigos[(int)(Math.random()*inimigos.length)], jogador.xp));
+
+
+
+        // Criando os inimigos aleatorios, mas unicos.
+
+        Inimigo orc = new Inimigo("Orc", 20, 9, 7);
+        Inimigo zumbi = new Inimigo("Zumbi", 2, 3, 3);
+        Inimigo goblin = new Inimigo("Goblin", 5, 4, 4);
+        Inimigo lobo = new Inimigo("Lobo", 7, 8, 2);
+
+        ArrayList<Inimigo> listaDeInimigos = new ArrayList<>();
+        listaDeInimigos.add(orc);
+        listaDeInimigos.add(zumbi);
+        listaDeInimigos.add(goblin);
+        listaDeInimigos.add(lobo);
+
+        //Numero random
+        int aleatorio = (int) (Math.random() * listaDeInimigos.size() - 1) ;
+
+        //Criando uma batalha aleatoria
+        batalha(listaDeInimigos.get(aleatorio));
     }
 
     // Método da principal da Batalha
@@ -425,7 +448,7 @@ public class LogicaDoGame {
     }
     //Luta final do jogo
     public static void batalhaFinal(){
-        batalha(new Inimigo("Bonoro", 300));
+        batalha(new Inimigo("Bonoro", 300, 20, 20));
         Historia.printarFinalDoGame(jogador);
         oJogoEstaRodando = false;
     }
