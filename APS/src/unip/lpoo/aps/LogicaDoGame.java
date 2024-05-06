@@ -91,21 +91,23 @@ public class LogicaDoGame {
             System.out.println("(1) Sim!");
             System.out.println("(2) Não, quero mudar esse nome.");
             int input = lerInt("-> ", 2);
-            while(forca + defesa == 10){
+
+            while((forca + defesa) != 10){
                 printarValor("Quantos pontos em força e defesa quer colocar?\n A soma dos dois tem que totalizar 10!\n Vamos começar com Força quantos pontos quer colocar?");
                 forca = lerInt("Força -> ", 10);
                 printarValor("E em defesa?");
-                lerInt("Defesa -> ", 10);
+                defesa = lerInt("Defesa -> ", 10);
 
-                if (forca + defesa < 10 ){
+                if ((forca + defesa) < 10 ){
                     limpaConsole();
                     System.out.println("O total de força é defesa é menor que 10, coloque mais pontos em um dos atributos.");
                     separarPrint(5);
-                } else if (forca + defesa >+ 10) {
+                } else if ((forca + defesa) > 10) {
                     limpaConsole();
                     System.out.println("O total de força é defesa é maior que 10, coloque menos pontos em um dos atributos.");
                     separarPrint(5);
                 }
+
             }
             if (input == 1){
                 nameSet = true;
@@ -114,6 +116,7 @@ public class LogicaDoGame {
 
         // Printando a Intro da Historia
         Historia.printarIntro();
+        System.out.println("força: "+ forca + "\t defesa: "+ defesa);
 
         // Criando um novo jogador com um nome definido
         jogador = new Jogador(nome, forca, defesa);
@@ -235,6 +238,7 @@ public class LogicaDoGame {
         limpaConsole();
         printarValor("Informações do Jogador");
         System.out.println(jogador.nome + "\tHP: " + jogador.hp + "/" + jogador.maxHp);
+        System.out.println("Força: " + jogador.forca + "\t Defesa: " + jogador.defesa);
         separarPrint(20);
         // Quantidade de xp e ouros do jogador
         System.out.println("XP: " + jogador.xp + "\tOuros: " + jogador.gold);
@@ -318,10 +322,10 @@ public class LogicaDoGame {
 
         // Criando os inimigos aleatorios, mas unicos.
 
-        Inimigo orc = new Inimigo("Orc", 20, 9, 7);
-        Inimigo zumbi = new Inimigo("Zumbi", 2, 3, 3);
-        Inimigo goblin = new Inimigo("Goblin", 5, 4, 4);
-        Inimigo lobo = new Inimigo("Lobo", 7, 8, 2);
+        Inimigo orc = new Inimigo("Orc", 25, (jogador.xp / 2 + 4), 7, 6);
+        Inimigo zumbi = new Inimigo("Zumbi", 15, (jogador.xp / 2 + 2), 3, 1);
+        Inimigo goblin = new Inimigo("Goblin", 18, (jogador.xp / 2 + 3), 4, 2);
+        Inimigo lobo = new Inimigo("Lobo", 17, (jogador.xp / 2 + 3), 2, 3);
 
         ArrayList<Inimigo> listaDeInimigos = new ArrayList<>();
         listaDeInimigos.add(orc);
@@ -466,7 +470,7 @@ public class LogicaDoGame {
     }
     //Luta final do jogo
     public static void batalhaFinal(){
-        batalha(new Inimigo("Bonoro", 300, 20, 20));
+        batalha(new Inimigo("Bonoro", 300, 120, 17, 22));
         Historia.printarFinalDoGame(jogador);
         oJogoEstaRodando = false;
     }

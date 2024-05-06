@@ -13,7 +13,7 @@ public class Jogador extends Personagem{
 
     // Contrutor do Jogador
     public Jogador(String nome, int forca, int defesa) {
-        super(nome, 100, 0, 5, 5);
+        super(nome, 100, 0, forca, defesa);
         // Colocando com nenhum upgrade inicialmente #0
         this.numAtkUpgrades = 0;
         this.numDefUpgrades = 0;
@@ -27,12 +27,33 @@ public class Jogador extends Personagem{
 
     @Override
     public int atacar() {
-        return (int) (Math.random()*(xp/4 + numAtkUpgrades*3 + 3) + xp/10 + numAtkUpgrades*2 + numDefUpgrades + 1);
+        double poderUpgradeAtk = 1;
+        if (numAtkUpgrades == 1){
+            poderUpgradeAtk = 1.25;
+        } else if (numAtkUpgrades == 2) {
+            poderUpgradeAtk = 1.50;
+        } else if (numAtkUpgrades == 3) {
+            poderUpgradeAtk = 1.75;
+        } else if (numAtkUpgrades == 4) {
+            poderUpgradeAtk = 2;
+        }
+
+        return (int) (Math.random()* ((xp + forca) / 2 ) * poderUpgradeAtk) + (forca - 2);
     }
 
     @Override
     public int defender() {
-        return (int) (Math.random()*(xp/4 + numDefUpgrades*3 + 3) + xp/10 + numDefUpgrades*2 + numDefUpgrades + 1);
+        double poderUpgradeDef = 1;
+        if (numDefUpgrades == 1){
+            poderUpgradeDef = 1.25;
+        } else if (numDefUpgrades == 2) {
+            poderUpgradeDef = 1.50;
+        } else if (numDefUpgrades == 3) {
+            poderUpgradeDef = 1.75;
+        } else if (numDefUpgrades == 4) {
+            poderUpgradeDef = 2;
+        }
+        return (int) (Math.random()*(((xp + defesa) / 3) * poderUpgradeDef) + (defesa - 2));
     }
     // Deixa o jogar qualquer escolher qual caracteristica quer
     public void escolheHabilidade(){
