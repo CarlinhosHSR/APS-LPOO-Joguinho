@@ -1,12 +1,12 @@
 package unip.lpoo.aps;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 public class LogicaDoGame {
     static Scanner leitura = new Scanner(System.in);
     static Jogador jogador;
 
     public static boolean oJogoEstaRodando;
+    static boolean batalhaBoss = false;
 
     // Encontros ou acontecimentos aleatorios
     public static String[] encontroAleatorio = {"Batalha", "Batalha", "Descanso", "Batalha", "Loja"};
@@ -88,29 +88,32 @@ public class LogicaDoGame {
             // Perguntando o jogador se esse é o nome que ele(a) quer usar
             limpaConsole();
             printarValor("Seu nome é " + nome + ".\nEsse é o seu nome?");
-            System.out.println("(1) Sim!");
-            System.out.println("(2) Não, quero mudar esse nome.");
-            int input = lerInt("-> ", 2);
+                System.out.println("(1) Sim!");
+                System.out.println("(2) Não, quero mudar esse nome.");
+                int input = lerInt("-> ", 2);
+                if (input == 1)
+                    nameSet = true;
 
-            while((forca + defesa) != 10){
-                printarValor("Quantos pontos em força e defesa quer colocar?\n A soma dos dois tem que totalizar 10!\n Vamos começar com Força quantos pontos quer colocar?");
-                forca = lerInt("Força -> ", 10);
-                printarValor("E em defesa?");
-                defesa = lerInt("Defesa -> ", 10);
+            if (nameSet) {
+                while ((forca + defesa) != 10) {
+                    printarValor("Quantos pontos em força e defesa quer colocar?\n A soma dos dois tem que totalizar 10!\n Vamos começar com Força quantos pontos quer colocar?");
+                    forca = lerInt("Força -> ", 10);
+                    printarValor("E em defesa?");
+                    defesa = lerInt("Defesa -> ", 10);
 
-                if ((forca + defesa) < 10 ){
-                    limpaConsole();
-                    System.out.println("O total de força é defesa é menor que 10, coloque mais pontos em um dos atributos.");
-                    separarPrint(5);
-                } else if ((forca + defesa) > 10) {
-                    limpaConsole();
-                    System.out.println("O total de força é defesa é maior que 10, coloque menos pontos em um dos atributos.");
-                    separarPrint(5);
+                    if ((forca + defesa) < 10) {
+                        limpaConsole();
+                        System.out.println("O total de força é defesa é menor que 10, coloque mais pontos em um dos atributos.");
+                        separarPrint(5);
+                    } else if ((forca + defesa) > 10) {
+                        limpaConsole();
+                        System.out.println("O total de força é defesa é maior que 10, coloque menos pontos em um dos atributos.");
+                        separarPrint(5);
+                    }
+                    if (input == 1)
+                        nameSet = true;
+
                 }
-
-            }
-            if (input == 1){
-                nameSet = true;
             }
         }while (!nameSet);
 
@@ -135,22 +138,19 @@ public class LogicaDoGame {
     public static void checarAto(){
         // Muda o ato baseado na quantidade de xp do jogador
 
-        if (jogador.xp >= 10 && ato == 1){
+        if (jogador.xp >= 25 && ato == 1){
             // Incrementa o ato e o local
             ato = 2;
             numLocalizacao = 1;
+
+            // Chamando o primeiro boss no final do ato.
+            bossPrimeiroAto();
             // Final do primeito ato da Historia
             Historia.printarPrimeiroAtoFinal();
             // Jogador sobi de nivel
             jogador.escolheHabilidade();
             // Inicio do segundo ato da Historia
             Historia.printarSegundoAtoInicio();
-            // Colocando novos valores para inimigos
-            /*inimigos[0] = "Mercenario";
-            inimigos[1] = "Ogro";
-            inimigos[2] = "Pitbull";
-            inimigos[3] = "Manual Gomes";
-            inimigos[4] = "Pinscher";*/
 
             // Colocando novos valores para encontros
             encontroAleatorio[0] = "Batalha";
@@ -161,7 +161,7 @@ public class LogicaDoGame {
             // Recuperando a vida do jogador após a finalização do ato
             jogador.hp = jogador.maxHp;
         }
-        else if(jogador.xp >= 50 && ato == 2){
+        else if(jogador.xp >= 75 && ato == 2){
             // Incrementa o ato e o local
             ato = 3;
             numLocalizacao = 2;
@@ -171,12 +171,7 @@ public class LogicaDoGame {
             jogador.escolheHabilidade();
             // Inicio do Terceiro ato
             Historia.printarTerceiroAtoInicio();
-            // Colocando novos valores para inimigos
-           /* inimigos[0] = "Mercenario";
-            inimigos[1] = "Vira-Lata Caramelo";
-            inimigos[2] = "Pinscher";
-            inimigos[3] = "Manual Gomes";
-            inimigos[4] = "Pinscher";*/
+
             // Colocando novos valores para encontros
             encontroAleatorio[0] = "Batalha";
             encontroAleatorio[1] = "Batalha";
@@ -186,7 +181,7 @@ public class LogicaDoGame {
             // Recuperando a vida do jogador após a finalização do ato
             jogador.hp = jogador.maxHp;
         }
-        else if (jogador.xp >= 100 && ato == 3) {
+        else if (jogador.xp >= 125 && ato == 3) {
             // Incrementa o ato e o local
             ato = 4;
             numLocalizacao = 3;
@@ -317,15 +312,30 @@ public class LogicaDoGame {
         limpaConsole();
         printarValor("Você encontrou um inimigo maligno. Você precisa enfrentá-lo!");
         aguardarUsuario();
+        // Variavel para armazenar o xp dos monstros, alterada a cada ato, para melhorar o balanceamento do jogo.
+        int xpMonsters = (int) (jogador.xp / 1.5 + 3); int xpMonsterSup = (int) (jogador.xp / 1.3 + 10);
+        // Variaveis para o hp dos monstros. Definitivamente tem um jeito melhor de fazer isso, mas na minha rapida pesquisa, eu não achei.
+        int hpMonterOrc = 20; int hpMonsterZumbi = 25; int hpMonsterGoblin = 18; int hpMonsterLobo = 17; int hpMonsterOrcSup = 40;
 
 
 
         // Criando os inimigos aleatorios, mas unicos.
+        if(ato == 1){
 
-        Inimigo orc = new Inimigo("Orc", 25, (jogador.xp / 2 + 4), 7, 6);
-        Inimigo zumbi = new Inimigo("Zumbi", 15, (jogador.xp / 2 + 2), 3, 1);
-        Inimigo goblin = new Inimigo("Goblin", 18, (jogador.xp / 2 + 3), 4, 2);
-        Inimigo lobo = new Inimigo("Lobo", 17, (jogador.xp / 2 + 3), 2, 3);
+        }
+        else if(ato == 2){
+             hpMonterOrc = (25 + (jogador.xp / 2)); hpMonsterZumbi = 15 + (jogador.xp / 2);
+             hpMonsterGoblin = 18 + (jogador.xp / 2); hpMonsterLobo = 17 + (jogador.xp / 2);
+
+             Inimigo orcSuperior = new Inimigo("Orc Superior", hpMonsterOrcSup, xpMonsterSup, 9, 8);
+        }
+
+        Inimigo orc = new Inimigo("Orc", hpMonterOrc, xpMonsters, 6, 6);
+        Inimigo zumbi = new Inimigo("Zumbi", hpMonsterZumbi, xpMonsters, 4, 2);
+        Inimigo goblin = new Inimigo("Goblin", hpMonsterGoblin, xpMonsters, 5, 3);
+        Inimigo lobo = new Inimigo("Lobo", hpMonsterLobo, xpMonsters, 4, 3);
+
+
 
         ArrayList<Inimigo> listaDeInimigos = new ArrayList<>();
         listaDeInimigos.add(orc);
@@ -343,6 +353,7 @@ public class LogicaDoGame {
     // Método da principal da Batalha
     public static void batalha(Inimigo inimigo){
         // Loop principal da batalha
+
         while(true){
             limpaConsole();
             printarValor(inimigo.nome + "\nHP: " + inimigo.hp + "/" + inimigo.maxHp);
@@ -415,13 +426,10 @@ public class LogicaDoGame {
                     input = lerInt("-> ", 3);
                     if (input == 1){
                         // O jogador toma a poção
-                        jogador.hp = jogador.maxHp;
+                        jogador.hp = (int) (jogador.maxHp / 1.5);
                         limpaConsole();
                         printarValor("Você tomou a poção de cura. Ela restaurou sua vida de volta para " + jogador.maxHp);
                         aguardarUsuario();
-                    }
-                    else{
-
                     }
                 }
                 else{
@@ -435,7 +443,7 @@ public class LogicaDoGame {
                 limpaConsole();
 
                 // Checando se o jogaodr não está na batalha final
-                if (ato != 4) {
+                if (ato != 4 && !batalhaBoss) {
                     // Chance de 33% de fugir da batalha,
                     if (Math.random() * 10 + 1 <= 3.5) {
                         printarValor("Você conseguiu fugir de " + inimigo.nome + "!");
@@ -445,13 +453,14 @@ public class LogicaDoGame {
                         // Calculando o dano recebido após falhar a fuga
                         int danoRecebido = inimigo.atacar();
                         System.out.println("Nessa falha tentavida vocÊ recebeu " + danoRecebido + " de dano!");
+                        jogador.hp -= danoRecebido;
                         aguardarUsuario();
                         if (jogador.hp <= 0) {
                             jogadorMorreu();
                         }
                     }
                 } else {
-                    printarValor("Você não pode fugir do Chefe final!");
+                    printarValor("Você não pode fugir de um Chefe!");
                     aguardarUsuario();
                 }
             }
@@ -473,6 +482,14 @@ public class LogicaDoGame {
         batalha(new Inimigo("Bonoro", 300, 120, 17, 22));
         Historia.printarFinalDoGame(jogador);
         oJogoEstaRodando = false;
+    }
+    public static void bossPrimeiroAto(){
+        /* Criando os Bosses do jogo!!
+           A ideia é que os bosses do jogo dropem uma boa quantidade de dinheiro, e obrigatorio derrotar para passar de ato. *Caso seja implemetado os equipamentos os bosses devem dropas itens para o Jogador sejam ofensivos ou defensivos.
+        */
+        batalhaBoss = true;
+        batalha(new Inimigo("Orc Chefe", 70,20, 7, 5));
+        batalhaBoss = false;
     }
 
     // Método chamado quando o jogador morre

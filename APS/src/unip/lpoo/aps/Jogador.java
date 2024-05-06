@@ -20,7 +20,7 @@ public class Jogador extends Personagem{
         // Colocando os status adicionais
         this.gold = 5;
         this.travesseiros = 1;
-        this.pocoes = 0;
+        this.pocoes = 1;
         // O Jogador escolhe quais caracteristicas quer ter ao criar um novo personagem
         escolheHabilidade();
     }
