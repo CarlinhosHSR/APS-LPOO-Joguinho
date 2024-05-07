@@ -233,13 +233,13 @@ public class LogicaDoGame {
         limpaConsole();
         printarValor("Informações do Jogador");
         System.out.println(jogador.nome + "\tHP: " + jogador.hp + "/" + jogador.maxHp);
-        System.out.println("Força: " + jogador.forca + "\t Defesa: " + jogador.defesa);
+        System.out.println("Força: " + jogador.forca + "\tDefesa: " + jogador.defesa);
         separarPrint(20);
         // Quantidade de xp e ouros do jogador
         System.out.println("XP: " + jogador.xp + "\tOuros: " + jogador.gold);
         separarPrint(20);
         // numero de poções
-        System.out.println("Poções de cura: " + jogador.pocoes);
+        System.out.println("Poções de cura: " + jogador.pocoes + "\tTravesseiros: "+ jogador.travesseiros);
         separarPrint(20);
 
         // Printando as habilidades escolhidas do Jogador
@@ -301,7 +301,7 @@ public class LogicaDoGame {
                 }
             }
             else{
-                System.out.println("Você está com a vida cheia, não precisa descansar agora.");
+                System.out.println("Você continua sua jornada.");
             }
             aguardarUsuario();
         }
@@ -359,7 +359,7 @@ public class LogicaDoGame {
             printarValor(inimigo.nome + "\nHP: " + inimigo.hp + "/" + inimigo.maxHp);
             printarValor(jogador.nome + "\nHP: " + jogador.hp + "/" + jogador.maxHp);
             separarPrint(20);
-            System.out.println("(1) Lutar\n(2) Usar Poção\n (3) Fugir");
+            System.out.println("(1) Lutar\n(2) Usar Poção\n(3) Fugir");
             int input = lerInt("-> ", 3);
             // Comportamento em cada escolha do jogador
             if(input == 1){
@@ -426,7 +426,7 @@ public class LogicaDoGame {
                     input = lerInt("-> ", 3);
                     if (input == 1){
                         // O jogador toma a poção
-                        jogador.hp = (int) (jogador.maxHp / 1.5);
+                        jogador.hp = jogador.maxHp;
                         limpaConsole();
                         printarValor("Você tomou a poção de cura. Ela restaurou sua vida de volta para " + jogador.maxHp);
                         aguardarUsuario();
