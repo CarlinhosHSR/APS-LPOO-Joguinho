@@ -2,7 +2,15 @@ package unip.lpoo.aps;
 
 public class Jogador extends Personagem{
     // Inteiros para guardar os upgrades/skills de cada "Caminho"
-    public int numAtkUpgrades, numDefUpgrades;
+    private int numAtkUpgrades, numDefUpgrades;
+
+    // Criado as variaveis dos equipamentos
+    private int resistenciaDefesa;
+    private String nomeEquipamento;
+
+    public String getNomeEquipamento() {return nomeEquipamento;}
+
+    public int getResistenciaDefesa() {return resistenciaDefesa;}
 
     //status adicionais do usuario
     int gold, travesseiros, pocoes;
@@ -10,6 +18,15 @@ public class Jogador extends Personagem{
     // Upgrades !!Experimental!!
     public String[] atkUpgrades = {"Strenth", "Power", "Might", "Godlike Strenght"};
     public String[] defUpgrades = {"Heavy Bones", "Stoneskin", "Scale Armor", "Holy Aura"};
+
+    public void equiparArmadura(String nome, int defesa){
+        this.nomeEquipamento = nome;
+        this.resistenciaDefesa = defesa;
+    }
+
+    public int getNumAtkUpgrades() {return numAtkUpgrades;}
+
+    public int getNumDefUpgrades() {return numDefUpgrades;}
 
     // Contrutor do Jogador
     public Jogador(String nome, int forca, int defesa) {
@@ -25,6 +42,8 @@ public class Jogador extends Personagem{
         escolheHabilidade();
     }
 
+
+
     @Override
     public int atacar() {
         double poderUpgradeAtk = 1;
@@ -39,6 +58,7 @@ public class Jogador extends Personagem{
         }
 
         return (int) (Math.random()* ((xp + forca) / 2 ) * poderUpgradeAtk) + (forca - 2);
+        // Random * ( Range) + min
     }
 
     @Override
@@ -53,7 +73,7 @@ public class Jogador extends Personagem{
         } else if (numDefUpgrades == 4) {
             poderUpgradeDef = 2;
         }
-        return (int) (Math.random()*(((xp + defesa) / 3) * poderUpgradeDef) + (defesa - 2));
+        return (int) (Math.random()*(((xp + resistencia) / 3) * poderUpgradeDef) + (resistencia - 2));
     }
     // Deixa o jogar qualquer escolher qual caracteristica quer
     public void escolheHabilidade(){

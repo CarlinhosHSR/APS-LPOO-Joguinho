@@ -1,7 +1,7 @@
 package unip.lpoo.aps;
 import java.util.ArrayList;
 import java.util.Scanner;
-public class LogicaDoGame {
+public class LogicaDoGame{
     static Scanner leitura = new Scanner(System.in);
     static Jogador jogador;
 
@@ -10,8 +10,6 @@ public class LogicaDoGame {
 
     // Encontros ou acontecimentos aleatorios
     public static String[] encontroAleatorio = {"Batalha", "Batalha", "Descanso", "Batalha", "Loja"};
-
-
 
 
     // Elementos da Historia
@@ -23,17 +21,15 @@ public class LogicaDoGame {
     // Método para o usuario fazer as entradas no Console
     public static int lerInt(String menu, int escolhaUsuario){
         int input;
-
         do{
             System.out.println(menu);
             try{
                 input = Integer.parseInt(leitura.next());
             }catch(Exception e){
                 input = -1;
-                System.out.println("Por entre com um número!");
+                System.out.println("Por favor entre com um número!");
             }
         }while (input < 1 || input > escolhaUsuario);
-
         return input;
     }
     // Método para simular a limpeza do console
@@ -60,7 +56,7 @@ public class LogicaDoGame {
 
     // Método para o jogo aguardar o click do usuario para continuar
     public static void aguardarUsuario(){
-        System.out.println("\n Pressione qualquer tecla para continuar...");
+        System.out.println("\nPressione qualquer tecla para continuar...");
         leitura.next();
     }
 
@@ -70,6 +66,7 @@ public class LogicaDoGame {
         String nome;
         int forca = 0;
         int defesa = 0;
+
         // Printando Titulo do jogo
         limpaConsole();
         separarPrint(40);
@@ -96,7 +93,8 @@ public class LogicaDoGame {
 
             if (nameSet) {
                 while ((forca + defesa) != 10) {
-                    printarValor("Quantos pontos em força e defesa quer colocar?\n A soma dos dois tem que totalizar 10!\n Vamos começar com Força quantos pontos quer colocar?");
+                    limpaConsole();
+                    printarValor("Quantos pontos em força e defesa quer colocar?\nA soma dos dois tem que totalizar 10!\nVamos começar com Força quantos pontos quer colocar?");
                     forca = lerInt("Força -> ", 10);
                     printarValor("E em defesa?");
                     defesa = lerInt("Defesa -> ", 10);
@@ -123,6 +121,8 @@ public class LogicaDoGame {
 
         // Criando um novo jogador com um nome definido
         jogador = new Jogador(nome, forca, defesa);
+        // Equipando o Jogador com a Armadura padrão
+        equipamentos(0);
 
         //Printando o inicio do primeiro Ato da Historia
         Historia.printarPrimeiroAtoInicio();
@@ -204,6 +204,7 @@ public class LogicaDoGame {
         // Isso calcula um numero aleatorio entre 0 e tamanho total do vetor encontroAleatorio
         int aleatorio = (int) (Math.random() * encontroAleatorio.length);
 
+
         // Chamando os método dos encontros aleatorios
         if(encontroAleatorio[aleatorio].equals("Batalha")){
             batalhaAleatoria();
@@ -233,7 +234,8 @@ public class LogicaDoGame {
         limpaConsole();
         printarValor("Informações do Jogador");
         System.out.println(jogador.nome + "\tHP: " + jogador.hp + "/" + jogador.maxHp);
-        System.out.println("Força: " + jogador.forca + "\tDefesa: " + jogador.defesa);
+        System.out.println("Equipado: " + jogador.getNomeEquipamento() + "\t Defesa: " + jogador.getResistenciaDefesa());
+        System.out.println("Força: " + jogador.forca + "\tResistencia: " + jogador.resistencia);
         separarPrint(20);
         // Quantidade de xp e ouros do jogador
         System.out.println("XP: " + jogador.xp + "\tOuros: " + jogador.gold);
@@ -243,12 +245,12 @@ public class LogicaDoGame {
         separarPrint(20);
 
         // Printando as habilidades escolhidas do Jogador
-        if(jogador.numAtkUpgrades > 0){
-            System.out.println("Habilidades Ofensivas: " + jogador.atkUpgrades[jogador.numAtkUpgrades - 1]);
+        if(jogador.getNumAtkUpgrades() > 0){
+            System.out.println("Habilidades Ofensivas: " + jogador.atkUpgrades[jogador.getNumAtkUpgrades() - 1]);
             separarPrint(20);
         }
-        if(jogador.numDefUpgrades > 0){
-            System.out.println("Habilidades Defensivas: " + jogador.defUpgrades[jogador.numDefUpgrades - 1]);
+        if(jogador.getNumDefUpgrades() > 0){
+            System.out.println("Habilidades Defensivas: " + jogador.defUpgrades[jogador.getNumDefUpgrades() - 1]);
         }
 
         aguardarUsuario();
@@ -343,6 +345,7 @@ public class LogicaDoGame {
         listaDeInimigos.add(goblin);
         listaDeInimigos.add(lobo);
 
+
         //Numero random
         int aleatorio = (int) (Math.random() * listaDeInimigos.size() - 1) ;
 
@@ -400,6 +403,7 @@ public class LogicaDoGame {
                     // Aumentando o xp do jogador
                     jogador.xp += inimigo.xp;
                     System.out.println("Você ganhou " + inimigo.xp + " XP!");
+
 
                     // Drops aleatorios
                     boolean adicionarTravesseiro = (Math.random()*5 + 1 <= 2.25);
@@ -490,6 +494,9 @@ public class LogicaDoGame {
         batalhaBoss = true;
         batalha(new Inimigo("Orc Chefe", 70,20, 7, 5));
         batalhaBoss = false;
+        int index = 1;
+        equipamentos(1);
+
     }
 
     // Método chamado quando o jogador morre
@@ -518,4 +525,64 @@ public class LogicaDoGame {
         }
 
     }
+    // Método para perguntar se o jogador quer manter a armadura que encontrou ou deixar para tras.
+    public static void equiparArmadura(String nomeEquip, int defEquip){
+        if (defEquip == 0){
+            jogador.equiparArmadura(nomeEquip, defEquip);
+        }
+        else {
+            System.out.println("Você encontrou um novo equipamento!\nÉ uma " + nomeEquip + ", com " + defEquip + " de defesa!");
+            System.out.println("Você está atualmente sem armadura, deseja equipar essa? \n(1) Sim\n(2) Não, quero continuar sem armadura.");
+            int escolha = lerInt("-->", 2);
+
+
+            if (escolha == 1) {
+                limpaConsole();
+                jogador.equiparArmadura(nomeEquip, defEquip);
+                System.out.println("Você equipou sua nova armadura.");
+            } else {
+                separarPrint(5);
+                System.out.println("Tem certeza? você só poderá obter essa armadura novamente no vendedor.\n(1) Sim\n(2) Não, mudei de ideia vou usar essa armadura!");
+                escolha = lerInt("-->", 2);
+                if (escolha == 1) {
+                    limpaConsole();
+                    System.out.println("Você vai embora sem a armadura.");
+                } else {
+                    limpaConsole();
+                    jogador.equiparArmadura(nomeEquip, defEquip);
+                    System.out.println("Você equipou sua nova armadura.");
+                }
+            }
+            aguardarUsuario();
+        }
+    }
+
+    // Método que cria as armaduras
+    public static void equipamentos(int index){
+        Equipamento armaduraDeFerro, armaduraDeOuro, armaduraDeBronze, semArmadura;
+        semArmadura = new Equipamento("Roupas Comuns", 0);
+        armaduraDeFerro = new Equipamento("Armadura de Ferro", 10);
+        armaduraDeOuro = new Equipamento("Armadura de Ouro", 13);
+        armaduraDeBronze = new Equipamento("Armadura de Bronze", 7);
+        switch (index){
+            case 1:
+                limpaConsole();
+                equiparArmadura(armaduraDeBronze.getNomeEquipamento(), armaduraDeBronze.getResistenciaDefesa());
+                break;
+
+            case 2:
+                limpaConsole();
+                equiparArmadura(armaduraDeFerro.getNomeEquipamento(), armaduraDeFerro.getResistenciaDefesa());
+                break;
+            case 3:
+                equiparArmadura(armaduraDeOuro.getNomeEquipamento(), armaduraDeOuro.getResistenciaDefesa());
+                break;
+
+            case 0:
+                equiparArmadura(semArmadura.getNomeEquipamento(), semArmadura.getResistenciaDefesa());
+                break;
+        }
+
+    }
+
 }

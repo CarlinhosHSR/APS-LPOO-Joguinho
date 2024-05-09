@@ -12,7 +12,7 @@ public class Inimigo extends Personagem{
         // Armazenando a variavel do xp do Jogador na xpJogador
         //this.xpJogador = xpInimigo;
         this.forca = forca;
-        this.defesa = defesa;
+        this.resistencia = defesa;
     }
 
     //Ataque e defesa especifico de cada inimigo
@@ -23,6 +23,6 @@ public class Inimigo extends Personagem{
 
     @Override
     public int defender() {
-        return (int) (Math.random()* ((xpJogador + defesa) / 3) + (defesa - 2));
+        return (int) (Math.random()* ((xpJogador + resistencia) / 3) + (resistencia - 2));
     }
 }
