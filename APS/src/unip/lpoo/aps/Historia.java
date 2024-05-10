@@ -130,4 +130,5 @@ public class Historia {
         System.out.println("Para a APS de Lógica de Programação Orientada a Objetos do Prof. Veras");
         System.out.println("Espero que você tenha gostado!");
     }
+
 }

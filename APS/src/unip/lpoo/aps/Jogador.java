@@ -1,5 +1,7 @@
 package unip.lpoo.aps;
 
+import static java.lang.Math.random;
+
 public class Jogador extends Personagem{
     // Inteiros para guardar os upgrades/skills de cada "Caminho"
     private int numAtkUpgrades, numDefUpgrades;
@@ -8,9 +10,23 @@ public class Jogador extends Personagem{
     private int resistenciaDefesa;
     private String nomeEquipamento;
 
+    // Getters dos Equipamentos
+
     public String getNomeEquipamento() {return nomeEquipamento;}
 
     public int getResistenciaDefesa() {return resistenciaDefesa;}
+
+    // Variaveis das Armas
+    private String nomeArma, tipoArma;
+    private int danoArma;
+    private double chanceDeAcertoArma, chanceDeCriticoArma;
+
+    // Getters das Armas
+    public String getNomeArma() {return nomeArma;}
+    public String getTipoArma() {return tipoArma;}
+    public int getDanoArma() {return danoArma;}
+    public double getChanceDeAcertoArma() {return chanceDeAcertoArma;}
+    public double getChanceDeCriticoArma() {return chanceDeCriticoArma;}
 
     //status adicionais do usuario
     int gold, travesseiros, pocoes;
@@ -18,11 +34,21 @@ public class Jogador extends Personagem{
     // Upgrades !!Experimental!!
     public String[] atkUpgrades = {"Strenth", "Power", "Might", "Godlike Strenght"};
     public String[] defUpgrades = {"Heavy Bones", "Stoneskin", "Scale Armor", "Holy Aura"};
-
+    // Método que equipa a Armadura
     public void equiparArmadura(String nome, int defesa){
         this.nomeEquipamento = nome;
         this.resistenciaDefesa = defesa;
     }
+
+    // Método que euipa a Arma
+    public void equiparArma(String nome, int dano, String tipo, double chanceDeAcerto, double chanceDeCritico){
+        this.nomeArma = nome;
+        this.danoArma = dano;
+        this.tipoArma = tipo;
+        this.chanceDeAcertoArma = chanceDeAcerto;
+        this.chanceDeCriticoArma = chanceDeCritico;
+    }
+
 
     public int getNumAtkUpgrades() {return numAtkUpgrades;}
 
@@ -57,7 +83,7 @@ public class Jogador extends Personagem{
             poderUpgradeAtk = 2;
         }
 
-        return (int) (Math.random()* ((xp + forca) / 2 ) * poderUpgradeAtk) + (forca - 2);
+        return (int) ((forca + danoArma) + (random()* 5));
         // Random * ( Range) + min
     }
 
@@ -73,7 +99,7 @@ public class Jogador extends Personagem{
         } else if (numDefUpgrades == 4) {
             poderUpgradeDef = 2;
         }
-        return (int) (Math.random()*(((xp + resistencia) / 3) * poderUpgradeDef) + (resistencia - 2));
+        return (int) ((resistencia + resistenciaDefesa) + (random() * 5));
     }
     // Deixa o jogar qualquer escolher qual caracteristica quer
     public void escolheHabilidade(){
