@@ -1,7 +1,7 @@
 package unip.lpoo.aps;
 import java.util.ArrayList;
 import java.util.Scanner;
-public class LogicaDoGame {
+public class LogicaDoGame{
     static Scanner leitura = new Scanner(System.in);
     static Jogador jogador;
 
@@ -9,9 +9,7 @@ public class LogicaDoGame {
     static boolean batalhaBoss = false;
 
     // Encontros ou acontecimentos aleatorios
-    public static String[] encontroAleatorio = {"Batalha", "Batalha", "Descanso", "Batalha", "Loja"};
-
-
+    public static String[] encontroAleatorio = {"Batalha", "Batalha", "Descanso", "Loja", "Loja"};
 
 
     // Elementos da Historia
@@ -23,17 +21,15 @@ public class LogicaDoGame {
     // Método para o usuario fazer as entradas no Console
     public static int lerInt(String menu, int escolhaUsuario){
         int input;
-
         do{
             System.out.println(menu);
             try{
                 input = Integer.parseInt(leitura.next());
             }catch(Exception e){
                 input = -1;
-                System.out.println("Por entre com um número!");
+                System.out.println("Por favor entre com um número!");
             }
         }while (input < 1 || input > escolhaUsuario);
-
         return input;
     }
     // Método para simular a limpeza do console
@@ -60,7 +56,7 @@ public class LogicaDoGame {
 
     // Método para o jogo aguardar o click do usuario para continuar
     public static void aguardarUsuario(){
-        System.out.println("\n Pressione qualquer tecla para continuar...");
+        System.out.println("\nPressione qualquer tecla para continuar...");
         leitura.next();
     }
 
@@ -70,6 +66,7 @@ public class LogicaDoGame {
         String nome;
         int forca = 0;
         int defesa = 0;
+
         // Printando Titulo do jogo
         limpaConsole();
         separarPrint(40);
@@ -84,6 +81,7 @@ public class LogicaDoGame {
         do {
             limpaConsole();
             printarValor("Qual é o seu nome?");
+            leitura.useDelimiter("\n");
             nome = leitura.next();
             // Perguntando o jogador se esse é o nome que ele(a) quer usar
             limpaConsole();
@@ -96,7 +94,8 @@ public class LogicaDoGame {
 
             if (nameSet) {
                 while ((forca + defesa) != 10) {
-                    printarValor("Quantos pontos em força e defesa quer colocar?\n A soma dos dois tem que totalizar 10!\n Vamos começar com Força quantos pontos quer colocar?");
+                    limpaConsole();
+                    printarValor("Quantos pontos em força e defesa quer colocar?\nA soma dos dois tem que totalizar 10!\nVamos começar com Força quantos pontos quer colocar?");
                     forca = lerInt("Força -> ", 10);
                     printarValor("E em defesa?");
                     defesa = lerInt("Defesa -> ", 10);
@@ -123,6 +122,9 @@ public class LogicaDoGame {
 
         // Criando um novo jogador com um nome definido
         jogador = new Jogador(nome, forca, defesa);
+        // Equipando o Jogador com a Armadura padrão
+        equipamentos(0);
+        armas(0);
 
         //Printando o inicio do primeiro Ato da Historia
         Historia.printarPrimeiroAtoInicio();
@@ -204,6 +206,7 @@ public class LogicaDoGame {
         // Isso calcula um numero aleatorio entre 0 e tamanho total do vetor encontroAleatorio
         int aleatorio = (int) (Math.random() * encontroAleatorio.length);
 
+
         // Chamando os método dos encontros aleatorios
         if(encontroAleatorio[aleatorio].equals("Batalha")){
             batalhaAleatoria();
@@ -233,7 +236,11 @@ public class LogicaDoGame {
         limpaConsole();
         printarValor("Informações do Jogador");
         System.out.println(jogador.nome + "\tHP: " + jogador.hp + "/" + jogador.maxHp);
-        System.out.println("Força: " + jogador.forca + "\tDefesa: " + jogador.defesa);
+        System.out.println("Equipado: " + jogador.getNomeEquipamento() + "\t Defesa: " + jogador.getResistenciaDefesa());
+        System.out.println("Arma: " + jogador.getNomeArma() + "\tDano: " + jogador.getDanoArma() + " | Chance Acerto: " + jogador.getChanceDeAcertoArma()
+        + " | Chance de Critico: " + jogador.getChanceDeCriticoArma()); // Melhor usar o String format para melhorar o visualização
+        System.out.println("Força: " + jogador.forca + " + "+ jogador.getDanoArma() + " Bonus arma!\n" + "Resistencia: " + jogador.resistencia + " + " + jogador.getResistenciaDefesa()
+        + " Bonus armadura!");
         separarPrint(20);
         // Quantidade de xp e ouros do jogador
         System.out.println("XP: " + jogador.xp + "\tOuros: " + jogador.gold);
@@ -243,12 +250,12 @@ public class LogicaDoGame {
         separarPrint(20);
 
         // Printando as habilidades escolhidas do Jogador
-        if(jogador.numAtkUpgrades > 0){
-            System.out.println("Habilidades Ofensivas: " + jogador.atkUpgrades[jogador.numAtkUpgrades - 1]);
+        if(jogador.getNumAtkUpgrades() > 0){
+            System.out.println("Habilidades Ofensivas: " + jogador.atkUpgrades[jogador.getNumAtkUpgrades() - 1]);
             separarPrint(20);
         }
-        if(jogador.numDefUpgrades > 0){
-            System.out.println("Habilidades Defensivas: " + jogador.defUpgrades[jogador.numDefUpgrades - 1]);
+        if(jogador.getNumDefUpgrades() > 0){
+            System.out.println("Habilidades Defensivas: " + jogador.defUpgrades[jogador.getNumDefUpgrades() - 1]);
         }
 
         aguardarUsuario();
@@ -258,25 +265,74 @@ public class LogicaDoGame {
     public static void loja(){
         limpaConsole();
         printarValor("Você encontra um estranho misterioso.\nEle te oferece algo:");
-        int valor = (int) (Math.random() * (10 + jogador.pocoes*3) + 10 + jogador.pocoes);
-        System.out.println("- Poção de cura: " + valor + " ouros.");
+
+        // Criando as variaveis para armazenar os valores dos equipamentos vendidos na loja.
+        int valorPocaoCura = (int) (Math.random() * (10 + jogador.pocoes*3) + 10 + jogador.pocoes);
+        int valorEspadaDeOuro = 2; // Pode ser random, mas acho melhor setar um valor fixo, para garantir o balanceamento
+        int valorArmaduraDeOuro = 1;
+
+        // Mostrando as opções para venda.
+        System.out.println("Poções\n(1)- Poção de cura: " + valorPocaoCura + " ouros.");
+        separarPrint(3);
+
+        System.out.println("Armas\n(2)- Espada de ouro: " + valorEspadaDeOuro + " ouros.");
+
+        separarPrint(3);
+
+        System.out.println("Armadura\n(3)- Armadura de Ouro: " + valorArmaduraDeOuro + " ouros.");
+
+        System.out.println("\n(4)- para sair.");
+
         separarPrint(20);
+
         // Perguntando ao jogador se ele quer comprar
-        System.out.println("Você quer comprar uma?\n(1) Sim!\n(2) Não, obrigado.");
-        int input = lerInt("-> ", 2);
+        System.out.println("O que deseja comprar?");
+        int input = lerInt("-> ", 4);
+
+        //Opções de compra começando com (1) Poção de cura
         if (input == 1){
             limpaConsole();
             //Verificando se o jogador tem dinheiro suficiente
-            if (jogador.gold >= valor){
-                printarValor("Você comprou uma poção de cura por " + valor + " ouros.");
+            if (jogador.gold >= valorPocaoCura){
+                printarValor("Você comprou uma poção de cura por " + valorPocaoCura + " ouros.");
                 jogador.pocoes++;
-                jogador.gold -= valor;
+                jogador.gold -= valorPocaoCura;
             }
             else{
                 printarValor("Você não tem ouro suficiente para isso...");
+                aguardarUsuario();
+                loja();
             }
-            aguardarUsuario();
         }
+        else if(input == 2){
+            limpaConsole();
+            //Verificando se o jogador tem dinheiro suficiente
+            if (jogador.gold >= valorEspadaDeOuro){
+                armasCompradasNaLoja(1, valorEspadaDeOuro);
+                jogador.gold -= valorEspadaDeOuro;
+            }
+            else {
+                printarValor("Você não tem ouro suficiente para isso...");
+                loja();
+            }
+        }
+        else if(input == 3){
+            limpaConsole();
+            //Verificando se o jogador tem dinheiro suficiente
+            if (jogador.gold >= valorArmaduraDeOuro){
+                printarValor("Você comprou uma Armadura de ouro por " + valorArmaduraDeOuro + " ouros.");
+                armadurasCompradasNaLoja(1, valorArmaduraDeOuro);
+                jogador.gold -= valorArmaduraDeOuro;
+            }
+            else {
+                printarValor("Você não tem ouro suficiente para isso...");
+                loja();
+            }
+        }
+        else if (input == 4){
+            loopDoGame();
+        }
+    limpaConsole();
     }
 
     // Descanso do jogador
@@ -343,6 +399,7 @@ public class LogicaDoGame {
         listaDeInimigos.add(goblin);
         listaDeInimigos.add(lobo);
 
+
         //Numero random
         int aleatorio = (int) (Math.random() * listaDeInimigos.size() - 1) ;
 
@@ -400,6 +457,7 @@ public class LogicaDoGame {
                     // Aumentando o xp do jogador
                     jogador.xp += inimigo.xp;
                     System.out.println("Você ganhou " + inimigo.xp + " XP!");
+
 
                     // Drops aleatorios
                     boolean adicionarTravesseiro = (Math.random()*5 + 1 <= 2.25);
@@ -490,6 +548,9 @@ public class LogicaDoGame {
         batalhaBoss = true;
         batalha(new Inimigo("Orc Chefe", 70,20, 7, 5));
         batalhaBoss = false;
+        int index = 1;
+        equipamentos(1);
+
     }
 
     // Método chamado quando o jogador morre
@@ -518,4 +579,183 @@ public class LogicaDoGame {
         }
 
     }
+    // Método para perguntar se o Jogador quer manter a arma que encontrou ou deixar para tras.
+    public static void equiparArma(String nome, int dano, String tipo, double chanceAcerto, double chanceCritico){
+        if (nome.equals("Faca de Manteiga")){
+            jogador.equiparArma(nome, dano, tipo, chanceAcerto, chanceCritico);
+        }
+        else {
+            System.out.println("Você encontrou uma nova arma!\nÉ uma " + nome + ", com " + dano + " de ataque!\tChance de Acerto: " + chanceAcerto + "\tChance Critico: " + chanceCritico + "%.");
+            separarPrint(1);
+            System.out.println("Você nesse momento tem uma "+ jogador.getNomeArma() + ":\t Dano: "+ jogador.getDanoArma() + "\tChance de Acerto: " + jogador.getChanceDeAcertoArma() +
+                    "\tChance de Critico: " + jogador.getChanceDeCriticoArma());
+            separarPrint(3);
+            System.out.println("\t" + jogador.getNomeArma() + " - " + nome + "\n\t" + jogador.getDanoArma() + " - " + dano + "\n\t" + jogador.getChanceDeCriticoArma()
+            + "% - " + chanceCritico + "%\n\t" + jogador.getChanceDeAcertoArma() + "% - " + chanceAcerto + "%");
+            System.out.println("Deseja trocar de arma? \n(1) Sim\n(2) Não, quero continuar com ela.");
+            int escolha = lerInt("-->", 2);
+
+
+            if (escolha == 1) {
+                limpaConsole();
+                jogador.equiparArma(nome, dano, tipo, chanceAcerto, chanceCritico);
+                System.out.println("Você equipou sua nova " + tipo);
+            } else {
+                separarPrint(5);
+                System.out.println("Tem certeza? você só poderá obter essa arma novamente no vendedor.\n(1) Sim, tenho certeza.\n(2) Não, mudei de ideia vou usar essa " + tipo + "!");
+                escolha = lerInt("-->", 2);
+                if (escolha == 1) {
+                    limpaConsole();
+                    System.out.println("Você vai embora sem a " + tipo + ".");
+                } else {
+                    limpaConsole();
+                    jogador.equiparArma(nome, dano, tipo, chanceAcerto, chanceCritico);
+                    System.out.println("Você equipou sua nova " + tipo + "!");
+                }
+            }
+            aguardarUsuario();
+        }
+    }
+
+    // Método para comprar armas dentro da loja
+    public static void armasCompradasNaLoja(int index, int valor){
+        if (index == 1){
+            // Criando o objeto Espada de Ouro
+            Arma espadaDeOuro;
+            espadaDeOuro = new Arma("Espada de Ouro", "Espada", 9, 0.97, 0.12);
+            String nomeArma = espadaDeOuro.getNomeArma(); String tipo = espadaDeOuro.getTipoArma(); int danoArma = espadaDeOuro.getDanoAtaque(); double chanceAcerto = espadaDeOuro.getChanceAcerto();
+            double chanceCritico = espadaDeOuro.getChanceCritico();
+
+            // String nomeArma, int danoArma, String tipo, double chanceAcerto, double chanceCritico
+            System.out.println("Tem certeza que quer comprar essa Arma? \n(1) Sim\n(2) Não\n" + nomeArma + ", com " + danoArma + " de ataque!\tChance de Acerto: " + chanceAcerto + "\tChance Critico: " + chanceCritico + "%.");
+            int escolha = lerInt("-->", 2);
+            if (escolha == 1){
+                jogador.equiparArma(nomeArma, danoArma, tipo, chanceAcerto, chanceCritico);
+                printarValor("Você comprou uma Espada de Ouro por " + valor + " ouros.");
+                aguardarUsuario();
+            }
+            else{
+                loja();
+            }
+        }
+        if (index == 2){
+            // Pra caso tenha outras armas na loja é só colocar nessas condicionais.
+        }
+    }
+
+    // Método que criar Armas no jogo
+    public static void armas(int index){
+        Arma espadaDeFerro, adagaDeAco, espadaDeOuro, espadaDeDiamente, facaDeManteiga;
+        espadaDeFerro = new Arma("Espada de Ferro", "Espada", 6, 0.95, 0.10);
+        adagaDeAco = new Arma("Adaga de Aço", "Adaga", 5, 0.99, 0.50);
+        espadaDeOuro = new Arma("Espada de Ouro", "Espada", 9, 0.97, 0.12);
+        espadaDeDiamente = new Arma("Espada de Diamante", "Espada", 15, 0.99, 0.15);
+        facaDeManteiga = new Arma("Faca de Manteiga", "Faca", 3, 1, 0.05);
+
+        switch (index){
+            case 1:
+                limpaConsole();
+                equiparArma(espadaDeFerro.getNomeArma(), espadaDeFerro.getDanoAtaque(), espadaDeFerro.getTipoArma(), espadaDeFerro.getChanceAcerto(), espadaDeFerro.getChanceCritico());
+                break;
+
+            case 2:
+                limpaConsole();
+                equiparArma(adagaDeAco.getNomeArma(), adagaDeAco.getDanoAtaque(), adagaDeAco.getTipoArma(), adagaDeAco.getChanceAcerto(), adagaDeAco.getChanceCritico());
+                break;
+            case 3:
+                equiparArma(espadaDeOuro.getNomeArma(), espadaDeOuro.getDanoAtaque(), espadaDeOuro.getTipoArma(), espadaDeOuro.getChanceAcerto(), espadaDeOuro.getChanceCritico());
+                break;
+            case 4:
+                equiparArma(espadaDeDiamente.getNomeArma(), espadaDeDiamente.getDanoAtaque(), espadaDeDiamente.getTipoArma(), espadaDeDiamente.getChanceAcerto(), espadaDeDiamente.getChanceCritico());
+                break;
+
+            case 0:
+                equiparArma(facaDeManteiga.getNomeArma(), facaDeManteiga.getDanoAtaque(), facaDeManteiga.getTipoArma(), facaDeManteiga.getChanceAcerto(), facaDeManteiga.getChanceCritico());
+                break;
+        }
+    }
+
+
+
+    // Método para perguntar se o jogador quer manter a armadura que encontrou ou deixar para tras.
+    public static void equiparArmadura(String nomeEquip, int defEquip){
+        if (defEquip == 0){
+            jogador.equiparArmadura(nomeEquip, defEquip);
+        }
+        else {
+            System.out.println("Você encontrou um novo equipamento!\nÉ uma " + nomeEquip + ", com " + defEquip + " de defesa!");
+            System.out.println("Você está atualmente sem armadura, deseja equipar essa? \n(1) Sim\n(2) Não, quero continuar sem armadura.");
+            int escolha = lerInt("-->", 2);
+
+
+            if (escolha == 1) {
+                limpaConsole();
+                jogador.equiparArmadura(nomeEquip, defEquip);
+                System.out.println("Você equipou sua nova armadura.");
+            } else {
+                separarPrint(5);
+                System.out.println("Tem certeza? você só poderá obter essa armadura novamente no vendedor.\n(1) Sim\n(2) Não, mudei de ideia vou usar essa armadura!");
+                escolha = lerInt("-->", 2);
+                if (escolha == 1) {
+                    limpaConsole();
+                    System.out.println("Você vai embora sem a armadura.");
+                } else {
+                    limpaConsole();
+                    jogador.equiparArmadura(nomeEquip, defEquip);
+                    System.out.println("Você equipou sua nova armadura.");
+                }
+            }
+            aguardarUsuario();
+        }
+    }
+
+    // Método para armaduras compradas na loja.
+    public static void armadurasCompradasNaLoja(int index, int valor){
+        if (index == 1){
+            Equipamento armaduraDeOuro;
+            armaduraDeOuro = new Equipamento("Armadura de Ouro", 13);
+            String nomeEquipamento = armaduraDeOuro.getNomeEquipamento(); int defesaEquipamento = armaduraDeOuro.getResistenciaDefesa();
+            System.out.println("Tem certeza que quer comprar essa Armadura? \n(1) Sim\n(2) Não \n" + nomeEquipamento + "\tDefesa: " + defesaEquipamento);
+            int escolha = lerInt("-->", 2);
+            if (escolha == 1){
+                jogador.equiparArmadura(nomeEquipamento, defesaEquipamento);
+                System.out.println("Você comprou uma Armadura de Ouro por " + valor + " ouros.");
+            }
+            else
+                loja();
+        }
+        if (index == 2){
+            // Pra caso tenha outras Armaduras na loja é só colocar nessas condicionais.
+        }
+    }
+
+
+    // Método que cria as armaduras
+    public static void equipamentos(int index){
+        Equipamento armaduraDeFerro, armaduraDeOuro, armaduraDeBronze, semArmadura;
+        semArmadura = new Equipamento("Roupas Comuns", 0);
+        armaduraDeFerro = new Equipamento("Armadura de Ferro", 10);
+        armaduraDeOuro = new Equipamento("Armadura de Ouro", 13);
+        armaduraDeBronze = new Equipamento("Armadura de Bronze", 7);
+        switch (index){
+            case 1:
+                limpaConsole();
+                equiparArmadura(armaduraDeBronze.getNomeEquipamento(), armaduraDeBronze.getResistenciaDefesa());
+                break;
+
+            case 2:
+                limpaConsole();
+                equiparArmadura(armaduraDeFerro.getNomeEquipamento(), armaduraDeFerro.getResistenciaDefesa());
+                break;
+            case 3:
+                equiparArmadura(armaduraDeOuro.getNomeEquipamento(), armaduraDeOuro.getResistenciaDefesa());
+                break;
+
+            case 0:
+                equiparArmadura(semArmadura.getNomeEquipamento(), semArmadura.getResistenciaDefesa());
+                break;
+        }
+
+    }
+
 }
