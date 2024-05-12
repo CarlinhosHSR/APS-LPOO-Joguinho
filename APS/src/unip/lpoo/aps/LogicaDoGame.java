@@ -183,7 +183,7 @@ public class LogicaDoGame{
             // Recuperando a vida do jogador após a finalização do ato
             jogador.hp = jogador.maxHp;
         }
-        else if (jogador.xp >= 125 && ato == 3) {
+        else if (jogador.xp >= 150 && ato == 3) {
             // Incrementa o ato e o local
             ato = 4;
             numLocalizacao = 3;
@@ -268,8 +268,8 @@ public class LogicaDoGame{
 
         // Criando as variaveis para armazenar os valores dos equipamentos vendidos na loja.
         int valorPocaoCura = (int) (Math.random() * (10 + jogador.pocoes*3) + 10 + jogador.pocoes);
-        int valorEspadaDeOuro = 2; // Pode ser random, mas acho melhor setar um valor fixo, para garantir o balanceamento
-        int valorArmaduraDeOuro = 1;
+        int valorEspadaDeOuro = 20; // Pode ser random, mas acho melhor setar um valor fixo, para garantir o balanceamento
+        int valorArmaduraDeOuro = 25;
 
         // Mostrando as opções para venda.
         System.out.println("Poções\n(1)- Poção de cura: " + valorPocaoCura + " ouros.");
@@ -281,7 +281,7 @@ public class LogicaDoGame{
 
         System.out.println("Armadura\n(3)- Armadura de Ouro: " + valorArmaduraDeOuro + " ouros.");
 
-        System.out.println("\n(4)- para sair.");
+        System.out.println("\n(4)- Para sair.");
 
         separarPrint(20);
 
@@ -313,6 +313,7 @@ public class LogicaDoGame{
             }
             else {
                 printarValor("Você não tem ouro suficiente para isso...");
+                aguardarUsuario();
                 loja();
             }
         }
@@ -326,6 +327,7 @@ public class LogicaDoGame{
             }
             else {
                 printarValor("Você não tem ouro suficiente para isso...");
+                aguardarUsuario();
                 loja();
             }
         }
@@ -380,15 +382,21 @@ public class LogicaDoGame{
 
         }
         else if(ato == 2){
-             hpMonterOrc = (25 + (jogador.xp / 2)); hpMonsterZumbi = 15 + (jogador.xp / 2);
-             hpMonsterGoblin = 18 + (jogador.xp / 2); hpMonsterLobo = 17 + (jogador.xp / 2);
+            hpMonterOrc = (18 + (jogador.xp / 2)); hpMonsterZumbi = 15 + (jogador.xp / 2);
+            hpMonsterGoblin = 18 + (jogador.xp / 2); hpMonsterLobo = 17 + (jogador.xp / 2);
 
+            xpMonsters = (int) (jogador.xp / 2 + 3);
              Inimigo orcSuperior = new Inimigo("Orc Superior", hpMonsterOrcSup, xpMonsterSup, 9, 8);
+        } else if (ato == 3) {
+            hpMonterOrc = (25 + (jogador.xp / 2)); hpMonsterZumbi = 20 + (jogador.xp / 2);
+            hpMonsterGoblin = 20 + (jogador.xp / 2); hpMonsterLobo = 20 + (jogador.xp / 2);
+
+            xpMonsters = (int) (jogador.xp / 2.5 + 3);
         }
 
-        Inimigo orc = new Inimigo("Orc", hpMonterOrc, xpMonsters, 6, 6);
+        Inimigo orc = new Inimigo("Orc", hpMonterOrc, xpMonsters, 6, 3);
         Inimigo zumbi = new Inimigo("Zumbi", hpMonsterZumbi, xpMonsters, 4, 2);
-        Inimigo goblin = new Inimigo("Goblin", hpMonsterGoblin, xpMonsters, 5, 3);
+        Inimigo goblin = new Inimigo("Goblin", hpMonsterGoblin, xpMonsters, 5, 2);
         Inimigo lobo = new Inimigo("Lobo", hpMonsterLobo, xpMonsters, 4, 3);
 
 
@@ -399,12 +407,30 @@ public class LogicaDoGame{
         listaDeInimigos.add(goblin);
         listaDeInimigos.add(lobo);
 
+        //Variavel que armazena o valor que ira escolher o monstro
+        int monstroEscolhido;
 
-        //Numero random
-        int aleatorio = (int) (Math.random() * listaDeInimigos.size() - 1) ;
+        //Método para inimigos aleatorios, mas com maior possibilidade de ser um inimigo fraco
+        int aleatorio = (int) (Math.random() * 100) ;
+        if (aleatorio <= 30){
+            //Nesse caso escolhendo o Zumbi
+            monstroEscolhido = 1;
+        }
+        else if(aleatorio <= 55){
+            //Nesse caso escolhendo o Goblin
+            monstroEscolhido = 2;
+        }
+        else if(aleatorio <= 85){
+            //Nesse Caso escolhendo o Lobo
+            monstroEscolhido = 3;
+        }
+        else{
+            //Nesse caso escolhendo o Orc
+            monstroEscolhido = 0;
+        }
 
         //Criando uma batalha aleatoria
-        batalha(listaDeInimigos.get(aleatorio));
+        batalha(listaDeInimigos.get(monstroEscolhido));
     }
 
     // Método da principal da Batalha
@@ -537,7 +563,7 @@ public class LogicaDoGame{
     }
     //Luta final do jogo
     public static void batalhaFinal(){
-        batalha(new Inimigo("Bonoro", 300, 120, 17, 22));
+        batalha(new Inimigo("Bonoro", 200, 120, 12, 14));
         Historia.printarFinalDoGame(jogador);
         oJogoEstaRodando = false;
     }
@@ -546,7 +572,7 @@ public class LogicaDoGame{
            A ideia é que os bosses do jogo dropem uma boa quantidade de dinheiro, e obrigatorio derrotar para passar de ato. *Caso seja implemetado os equipamentos os bosses devem dropas itens para o Jogador sejam ofensivos ou defensivos.
         */
         batalhaBoss = true;
-        batalha(new Inimigo("Orc Chefe", 70,20, 7, 5));
+        batalha(new Inimigo("Orc Chefe", 60,20, 4 ,4));
         batalhaBoss = false;
         int index = 1;
         equipamentos(1);
@@ -555,9 +581,11 @@ public class LogicaDoGame{
 
     // Método chamado quando o jogador morre
     public static void jogadorMorreu(){
+        limpaConsole();
         printarValor("Você morreu...");
         printarValor("Você ganhou " + jogador.xp + " de XP na sua jornada. Tente ganhar mais na proxima vez!");
         System.out.println("Obrigado por jogar nosso jogo! Espero que tenha gostado :)");
+        aguardarUsuario();
         oJogoEstaRodando = false;
     }
 
