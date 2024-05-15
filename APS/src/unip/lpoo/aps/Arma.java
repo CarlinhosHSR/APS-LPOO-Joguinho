@@ -5,12 +5,10 @@ public class Arma{
     private String nomeArma, tipoArma;
     private double chanceAcerto, chanceCritico;
 
-    public Arma(String nome, String tipo, int dano, double ChanceDeAcertar, double chanceCritico){
+    public Arma(String nome, String tipo, int dano){
         this.nomeArma = nome;
         this.tipoArma = tipo;
         this.danoAtaque = dano;
-        this.chanceAcerto = ChanceDeAcertar;
-        this.chanceCritico = chanceCritico;
     }
 
     public int getDanoAtaque() {return danoAtaque;}
@@ -19,7 +17,4 @@ public class Arma{
 
     public String getTipoArma() {return tipoArma;}
 
-    public double getChanceAcerto() {return chanceAcerto;}
-
-    public double getChanceCritico() {return chanceCritico;}
 }
