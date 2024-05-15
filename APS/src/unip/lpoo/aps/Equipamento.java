@@ -1,8 +1,8 @@
 package unip.lpoo.aps;
 
 public class Equipamento{
-    private int resistenciaDefesa;
-    private String nomeEquipamento;
+    private final int resistenciaDefesa;
+    private final String nomeEquipamento;
 
     public Equipamento(String nome, int defesa){
         this.resistenciaDefesa = defesa;

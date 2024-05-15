@@ -2,7 +2,7 @@ package unip.lpoo.aps;
 
 import static java.lang.Math.random;
 
-public class Jogador extends Personagem{
+public class Jogador extends Personagem implements Habilidades{
     // Inteiros para guardar os upgrades/skills de cada "Caminho"
     private int numAtkUpgrades, numDefUpgrades;
 
@@ -25,15 +25,13 @@ public class Jogador extends Personagem{
     public String getNomeArma() {return nomeArma;}
     public String getTipoArma() {return tipoArma;}
     public int getDanoArma() {return danoArma;}
-    public double getChanceDeAcertoArma() {return chanceDeAcertoArma;}
-    public double getChanceDeCriticoArma() {return chanceDeCriticoArma;}
 
     //status adicionais do usuario
     int gold, travesseiros, pocoes;
 
     // Upgrades !!Experimental!!
-    public String[] atkUpgrades = {"Strenth", "Power", "Might", "Godlike Strenght"};
-    public String[] defUpgrades = {"Heavy Bones", "Stoneskin", "Scale Armor", "Holy Aura"};
+    public String[] atkUpgrades = {"Lutador", "Lutador+", "Lutador++", "Lutador+++"};
+    public String[] defUpgrades = {"Casca-grossa", "Casca-grossa+", "Casca-grossa++", "Casca-grossa+++"};
     // Método que equipa a Armadura
     public void equiparArmadura(String nome, int defesa){
         this.nomeEquipamento = nome;
@@ -41,12 +39,10 @@ public class Jogador extends Personagem{
     }
 
     // Método que euipa a Arma
-    public void equiparArma(String nome, int dano, String tipo, double chanceDeAcerto, double chanceDeCritico){
+    public void equiparArma(String nome, int dano, String tipo){
         this.nomeArma = nome;
         this.danoArma = dano;
         this.tipoArma = tipo;
-        this.chanceDeAcertoArma = chanceDeAcerto;
-        this.chanceDeCriticoArma = chanceDeCritico;
     }
 
 
@@ -64,7 +60,7 @@ public class Jogador extends Personagem{
         this.gold = 5;
         this.travesseiros = 1;
         this.pocoes = 1;
-        // O Jogador escolhe quais caracteristicas quer ter ao criar um novo personagem
+        // O Jogador escolhe quais caracteristicas quer ter ao criar um personagem
         escolheHabilidade();
     }
 
@@ -72,7 +68,7 @@ public class Jogador extends Personagem{
 
     @Override
     public int atacar() {
-        double poderUpgradeAtk = 1;
+        /*double poderUpgradeAtk = 1;
         if (numAtkUpgrades == 1){
             poderUpgradeAtk = 1.25;
         } else if (numAtkUpgrades == 2) {
@@ -81,7 +77,7 @@ public class Jogador extends Personagem{
             poderUpgradeAtk = 1.75;
         } else if (numAtkUpgrades == 4) {
             poderUpgradeAtk = 2;
-        }
+        }*/
 
         return (int) ((forca + danoArma) + (random()* 5));
         // Random * ( Range) + min
@@ -89,7 +85,7 @@ public class Jogador extends Personagem{
 
     @Override
     public int defender() {
-        double poderUpgradeDef = 1;
+        /*double poderUpgradeDef = 1;
         if (numDefUpgrades == 1){
             poderUpgradeDef = 1.25;
         } else if (numDefUpgrades == 2) {
@@ -98,7 +94,7 @@ public class Jogador extends Personagem{
             poderUpgradeDef = 1.75;
         } else if (numDefUpgrades == 4) {
             poderUpgradeDef = 2;
-        }
+        }*/
         return (int) ((resistencia + resistenciaDefesa) + (random() * 5));
     }
     // Deixa o jogar qualquer escolher qual caracteristica quer
@@ -117,7 +113,38 @@ public class Jogador extends Personagem{
             numAtkUpgrades++;
         }else{
             LogicaDoGame.printarValor("Você escolheu " + defUpgrades[numDefUpgrades] + "!");
+            numDefUpgrades++;
         }
         LogicaDoGame.aguardarUsuario();
     }
+
+    public void ganharPontoAtributo(){
+        LogicaDoGame.limpaConsole();
+        LogicaDoGame.printarValor("Você ganhou um ponto!\nOnde quer usar?\n(1) Força - Atualmente em " + forca + "\n(2)" +
+                " Resistencia - Atualmente em " + resistencia);
+        int input = LogicaDoGame.lerInt("-->", 2);
+        LogicaDoGame.limpaConsole();
+
+        if (input == 1){
+            this.forca++;
+            LogicaDoGame.printarValor("Você usou seu ponto em força!\nAgora você tem " + forca + " de força!");
+            LogicaDoGame.aguardarUsuario();
+        }
+        if (input == 2){
+            this.resistencia++;
+            LogicaDoGame.printarValor("Você usou seu ponto em resistencia!\nAgora você tem " + resistencia + " de resistencia!");
+            LogicaDoGame.aguardarUsuario();
+        }
+    }
+
+    @Override
+    public int atacarComHabilidade(int atkUpgrade) {
+        return (int) 25 + (atkUpgrade * 2);
+    }
+
+    @Override
+    public void defendeComHabilidade(int defUpgrade) {
+        resistencia += 5 + defUpgrade;
+    }
+
 }

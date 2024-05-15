@@ -1,7 +1,7 @@
 package unip.lpoo.aps;
 
 public abstract class Personagem{
-    // Variaveis e atributos que todos os personagens tem que ter!
+    // Variaveis e atributos que todos os personagens têm que ter!
     public String nome;
     public int maxHp, hp, xp, forca, resistencia;
 
@@ -15,7 +15,7 @@ public abstract class Personagem{
         this.hp = maxHp;
     }
 
-    // Métodos que todos os personagens tem que ter!
+    // Métodos que todos os personagens têm que ter!
     public abstract int atacar();
     public abstract int defender();
 }
