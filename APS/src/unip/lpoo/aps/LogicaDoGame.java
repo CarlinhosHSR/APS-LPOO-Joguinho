@@ -117,9 +117,6 @@ public class LogicaDoGame{
                         System.out.println("O total de força é defesa é maior que 10, coloque menos pontos em um dos atributos.");
                         separarPrint(5);
                     }
-                    if (input == 1)
-                        nameSet = true;
-
                 }
             }
         }while (!nameSet);
@@ -151,24 +148,29 @@ public class LogicaDoGame{
         // Método para chamar as missões baseados no index
 
         if (index == 0){
-            System.out.println("Você caminha pelas ruas de Elisandria, ainda se adaptando à sua nova realidade.\n" +
-                    "As pessoas tentam tapar as janelas de suas casas com madeira. Algumas correm por ai, desesperadas sem saber o que fazer.\n" +
-                    "De repente, uma sensação de perigo invade seus pensamentos. Você fecha os olhos, concentrando-se em seus sentidos.\n" +
-                    "Você consegue sentir uma energia maligna emanando de um lugar próximo. E então, escuta uma grande gritaria.\n");
+            System.out.println("""
+                    Você caminha pelas ruas de Elisandria, ainda se adaptando à sua nova realidade.
+                    As pessoas tentam tapar as janelas de suas casas com madeira. Algumas correm por ai, desesperadas sem saber o que fazer.
+                    De repente, uma sensação de perigo invade seus pensamentos. Você fecha os olhos, concentrando-se em seus sentidos.
+                    Você consegue sentir uma energia maligna emanando de um lugar próximo. E então, escuta uma grande gritaria.
+                    """);
             aguardarUsuario();
-            System.out.println("Você segue até o parque no centro da cidade." +
-                    "Lá, você encontra um grupo de criaturas sombrias, queimando o que restava das árvores.\n" +
-                    "Havia uma multidão de cidadãos correndo para todos os lados. Goblins do Fogo… Você precisa agir.\n" +
-                    "Não pode permitir que eles destruam ainda mais Elisandria. Você respira fundo, reunindo toda a sua coragem.\n");
+            System.out.println("""
+                    Você segue até o parque no centro da cidade.
+                    Lá, você encontra um grupo de criaturas sombrias, queimando o que restava das árvores.
+                    Havia uma multidão de cidadãos correndo para todos os lados. Goblins do Fogo… Você precisa agir.
+                    Não pode permitir que eles destruam ainda mais Elisandria. Você respira fundo, reunindo toda a sua coragem.
+                    """);
             System.out.println("\nOq você vai fazer?\n(1) Lutar\n(2) Descansar");
-            int escolha = 0;
+            int escolha;
             do {
                 escolha = lerInt("-->", 2);
 
                 if (escolha == 1){
                     limpaConsole();
-                    System.out.println("Você se aproxima das criaturas, pronto para enfrentá-las. " +
-                            "Um deles, nota a sua aproximação repentina e começa a rir de forma travessa, indo em sua direção.");
+                    System.out.println("""
+                            Você se aproxima das criaturas, pronto para enfrentá-las.
+                            Um deles, nota a sua aproximação repentina e começa a rir de forma travessa, indo em sua direção.""");
                     aguardarUsuario();
                     Inimigo goblinDeFogo = new Inimigo("Goblin de Fogo", 20, 5, 2, 3);
                     batalha(goblinDeFogo);
@@ -452,14 +454,11 @@ public class LogicaDoGame{
 
 
         // Criando os inimigos aleatorios, mas unicos.
-        if(ato == 1){
-
-        }
-        else if(ato == 2){
+        if(ato == 2){
             hpMonterOrc = (18 + (jogador.xp / 2)); hpMonsterZumbi = 15 + (jogador.xp / 2);
             hpMonsterGoblin = 18 + (jogador.xp / 2); hpMonsterLobo = 17 + (jogador.xp / 2);
 
-            xpMonsters = (int) (jogador.xp / 2 + 3);
+            xpMonsters = (jogador.xp / 2 + 3);
              Inimigo orcSuperior = new Inimigo("Orc Superior", hpMonsterOrcSup, xpMonsterSup, 9, 8);
         } else if (ato == 3) {
             hpMonterOrc = (25 + (jogador.xp / 2)); hpMonsterZumbi = 20 + (jogador.xp / 2);
@@ -510,15 +509,18 @@ public class LogicaDoGame{
     // Método da principal da Batalha
     public static void batalha(Inimigo inimigo){
         // Loop principal da batalha
-        int turnosHabilidade = 0;
-        int turnosAtaque = 0;
-        int turnosDefesa = 0;
+        int turnosHabilidadeAtaque = 0;
+        int turnosHabilidadeDefesa = 0;
         while(true){
             limpaConsole();
             printarValor(inimigo.nome + "\nHP: " + inimigo.hp + "/" + inimigo.maxHp);
             printarValor(jogador.nome + "\nHP: " + jogador.hp + "/" + jogador.maxHp);
             separarPrint(20);
-            System.out.println("(1) Lutar\n(2) Usar Poção\n(3) Usar Habilidade \n(4) Fugir");
+            System.out.println("""
+                    (1) Lutar
+                    (2) Usar Poção
+                    (3) Usar Habilidade
+                    (4) Fugir""");
 
             int input = lerInt("-> ", 3);
             // Comportamento em cada escolha do jogador
@@ -540,11 +542,11 @@ public class LogicaDoGame{
 
                 // Se o jogador tiver usado a habilidade ele fica contado, para quando der 3 rounds zerar o contador.
                 // E o usuario poder usar a habilidade novamente
-                if (turnosAtaque > 0){
-                    turnosAtaque++;
+                if (turnosHabilidadeAtaque > 0){
+                    turnosHabilidadeAtaque++;
                 }
-                if (turnosAtaque == 4){
-                    turnosAtaque = 0;
+                if (turnosHabilidadeAtaque == 4){
+                    turnosHabilidadeAtaque = 0;
                 }
 
                 // dano distribuido na batalha
@@ -585,7 +587,7 @@ public class LogicaDoGame{
                     aguardarUsuario();
 
                     // Tirando o aumento de defesa do personagem, caso ele tenha usado a habilidade de defesa
-                    if (turnosDefesa != 0){
+                    if (turnosHabilidadeDefesa != 0){
                         jogador.resistencia -= 5 + jogador.getNumDefUpgrades();
                     }
 
@@ -598,7 +600,9 @@ public class LogicaDoGame{
                 if(jogador.pocoes > 0 && jogador.hp < jogador.maxHp){
                     //Nesse caso o jogador consegue tomar poções
                     printarValor("Você quer beber uma poção de cura? (" + jogador.pocoes + " poções disponiveis).");
-                    System.out.println("(1) Sim\n(2) Não");
+                    System.out.println("""
+                            (1) Sim
+                            (2) Não""");
                     input = lerInt("-> ", 3);
                     if (input == 1){
                         // O jogador toma a poção
@@ -618,14 +622,17 @@ public class LogicaDoGame{
             else if (input == 3){
                 // Usar Habilidades
                 limpaConsole();
-                int escolha = 0;
-                System.out.println("Você vai usar qual habilidade?\n(1) Corte Rapido (Desfere um dano massivo, só pode ser usado a cada 3 turnos.)\n(2) Pele Dura " +
-                        "Aumenta seus status de defesa em 5 ou mais temporariamente, só pode ser usado uma vez por luta.)\n(3) Para sair, caso não consiga usar as habilides ou não queira.");
+                int escolha;
+                System.out.println("""
+                        Você vai usar qual habilidade?
+                        (1) Corte Rapido (Desfere um dano massivo, só pode ser usado a cada 3 turnos.)
+                        (2) Pele Dura Aumenta seus status de defesa em 5 ou mais temporariamente, só pode ser usado uma vez por luta.)
+                        (3) Para sair, caso não consiga usar as habilides ou não queira.""");
                 do{
                     escolha = lerInt("-->", 3);
                     if (escolha == 1){
-                        if (turnosAtaque == 0 && jogador.getNumAtkUpgrades() > 0 && jogador.forca > 5){
-                            int danoEspecial = (int) jogador.atacarComHabilidade(jogador.getNumAtkUpgrades());
+                        if (turnosHabilidadeAtaque == 0 && jogador.getNumAtkUpgrades() > 0 && jogador.forca > 5){
+                            int danoEspecial = jogador.atacarComHabilidade(jogador.getNumAtkUpgrades());
                             int danoRecebido = inimigo.atacar() - jogador.defender();
                             // Checando se o dano feito e recebido não é zero
                             if (danoRecebido <= 0){
@@ -641,7 +648,7 @@ public class LogicaDoGame{
                             System.out.println("Você usou Corte Rapido e deu " + danoEspecial + " de Dano em " + inimigo.nome + ".");
                             System.out.println(inimigo.nome + " deu " + danoRecebido + " de dano em você");
                             aguardarUsuario();
-                            turnosAtaque++;
+                            turnosHabilidadeAtaque++;
                             // Checando se o Jogador ainda está vivo
                             if(jogador.hp <= 0){
                                 jogadorMorreu(); //Método de end game
@@ -671,29 +678,29 @@ public class LogicaDoGame{
                                 break;
                             }
                         }
-                        else if(turnosAtaque == 0 && jogador.getNumAtkUpgrades() > 0 && jogador.forca <= 5){
+                        else if(turnosHabilidadeAtaque == 0 && jogador.getNumAtkUpgrades() > 0 && jogador.forca <= 5){
                             System.out.println("Você não tem força suficiente para usar essa habilidade.");
                             aguardarUsuario();
                         }
-                        else if(turnosAtaque == 0 && jogador.getNumAtkUpgrades() == 0){
+                        else if(turnosHabilidadeAtaque == 0 && jogador.getNumAtkUpgrades() == 0){
                             System.out.println("Você ainda não tem essa habilidade.");
                             aguardarUsuario();
                         }
                     }
                     else if(escolha == 2) {
                         // Usar habilidade de defesa, mas só pode ser usado se o jogador já tiver pegado um ponto em def upgrade
-                        if (turnosDefesa == 0 && jogador.getNumDefUpgrades() > 0 && jogador.resistencia > 5) {
+                        if (turnosHabilidadeDefesa == 0 && jogador.getNumDefUpgrades() > 0 && jogador.resistencia > 5) {
                             jogador.defendeComHabilidade(jogador.getNumDefUpgrades());
-                            turnosDefesa++;
+                            turnosHabilidadeDefesa++;
                             System.out.println("Você enrijese sua pele, e aumenta a sua defesa.");
                             aguardarUsuario();
                         }
-                        else if(turnosDefesa == 0 && jogador.getNumDefUpgrades() > 0 && jogador.resistencia <= 5){
+                        else if(turnosHabilidadeDefesa == 0 && jogador.getNumDefUpgrades() > 0 && jogador.resistencia <= 5){
                             System.out.println("Você não tem resistencia suficiente para usar essa habilidade");
                             aguardarUsuario();
                         }
                         // Se o jogador não tiver pegado um upgrade de defesa, o jogo retorna uma mensagem que o jogador não pode usar essa skill ainda.
-                        else if(turnosDefesa == 0 && jogador.getNumDefUpgrades() == 0){
+                        else if(turnosHabilidadeDefesa == 0 && jogador.getNumDefUpgrades() == 0){
                             System.out.println("Você ainda não consegue usar essa habilidade.");
                             aguardarUsuario();
                         }
@@ -744,9 +751,10 @@ public class LogicaDoGame{
         printarValor(localizacao[numLocalizacao]);
         System.out.println("Escolha uma ação:");
         separarPrint(20);
-        System.out.println("(1) Continue sua jornada");
-        System.out.println("(2) Informações do Jogador");
-        System.out.println("(3) Sair do Jogo");
+        System.out.println("""
+        (1) Continue sua jornada
+        (2) Informações do Jogador
+        (3) Sair do Jogo""");
     }
     //Luta final do jogo
     public static void batalhaFinal(){
@@ -761,7 +769,6 @@ public class LogicaDoGame{
         batalhaBoss = true;
         batalha(new Inimigo("Orc Chefe", 60,10, 7 ,4));
         batalhaBoss = false;
-        int index = 1;
         equipamentos(1);
 
     }
@@ -815,13 +822,15 @@ public class LogicaDoGame{
                 System.out.println("Você equipou sua nova " + tipo);
             } else {
                 separarPrint(5);
-                System.out.println("Tem certeza? você só poderá obter essa arma novamente no vendedor.\n(1) Sim, tenho certeza.\n(2) Não, mudei de ideia vou usar essa " + tipo + "!");
+                System.out.printf("""
+                        Tem certeza? você só poderá obter essa arma novamente no vendedor.
+                        (1) Sim, tenho certeza.
+                        (2) Não, mudei de ideia vou usar essa %s!""", tipo);
                 escolha = lerInt("-->", 2);
+                limpaConsole();
                 if (escolha == 1) {
-                    limpaConsole();
                     System.out.println("Você vai embora sem a " + tipo + ".");
                 } else {
-                    limpaConsole();
                     jogador.equiparArma(nome, dano, tipo);
                     System.out.println("Você equipou sua nova " + tipo + "!");
                 }
@@ -909,11 +918,10 @@ public class LogicaDoGame{
                 separarPrint(5);
                 System.out.println("Tem certeza? você só poderá obter essa armadura novamente no vendedor.\n(1) Sim\n(2) Não, mudei de ideia vou usar essa armadura!");
                 escolha = lerInt("-->", 2);
+                limpaConsole();
                 if (escolha == 1) {
-                    limpaConsole();
                     System.out.println("Você vai embora sem a armadura.");
                 } else {
-                    limpaConsole();
                     jogador.equiparArmadura(nomeEquip, defEquip);
                     System.out.println("Você equipou sua nova armadura.");
                 }

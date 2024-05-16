@@ -19,7 +19,6 @@ public class Jogador extends Personagem implements Habilidades{
     // Variaveis das Armas
     private String nomeArma, tipoArma;
     private int danoArma;
-    private double chanceDeAcertoArma, chanceDeCriticoArma;
 
     // Getters das Armas
     public String getNomeArma() {return nomeArma;}

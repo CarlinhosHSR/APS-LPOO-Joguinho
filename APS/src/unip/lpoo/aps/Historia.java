@@ -8,54 +8,60 @@ public class Historia{
         LogicaDoGame.separarPrint(30);
         System.out.println("Intro");
         LogicaDoGame.separarPrint(30);
-        System.out.println("Nossa história começa em Elisandria, um farol de prosperidade e harmonia entre a civilização e a " +
-                "natureza.\nSeus muros de pedra, adornados com trepadeiras floridas, cercavam casas aconchegantes e " +
-                "ruas movimentadas,\nonde mercadores trocavam seus produtos, crianças brincavam e artesãos criavam obras de " +
-                "rara beleza.\nElisandria era a joia do reino, um exemplo de como humanos e natureza podem coexistir em perfeita sintonia.\n");
+        System.out.println("""
+                Nossa história começa em Elisandria, um farol de prosperidade e harmonia entre a civilização e a natureza.
+                Seus muros de pedra, adornados com trepadeiras floridas, cercavam casas aconchegantes e
+                ruas movimentadas, onde mercadores trocavam seus produtos, crianças brincavam e artesãos criavam obras de
+                rara beleza.
+                Elisandria era a joia do reino, um exemplo de como humanos e natureza podem coexistir em perfeita sintonia.""");
         LogicaDoGame.aguardarUsuario();
         LogicaDoGame.espacoTexto(1);
-        System.out.println("Mas a sombra da ganância e do descuido logo se abateu sobre a cidade.\n" +
-                "Com a sucessão de Rei Eldred, obcecado por poder e riquezas, ignorou os avisos de seus " +
-                "conselheiros e do povo sobre os perigos da \n" +
-                "exploração desenfreada dos recursos naturais. Florestas ancestrais foram derrubadas, rios poluídos, e os campos" +
-                "férteis se tornaram áridos e erodidos.\n" +
-                "\n" +
-                "A fúria dos deuses da natureza não tardou a se manifestar. Tempestades violentas assolaram a região, " +
-                "colheitas falharam, e a fome se espalhou pelas ruas de Elisandria.\nO povo, desesperado e desiludido com a liderança do rei, " +
-                "começou a imitar seus maus hábitos, devastando o que restava da beleza natural em torno da cidade.\nA magia que assolava o " +
-                "local, não demoraria para se enegrecer.");
+        System.out.println("""
+                Mas a sombra da ganância e do descuido logo se abateu sobre a cidade.
+                Com a sucessão de Rei Eldred, obcecado por poder e riquezas, ignorou os avisos de seus
+                conselheiros e do povo sobre os perigos da
+                exploração desenfreada dos recursos naturais. Florestas ancestrais foram derrubadas, rios poluídos, e os campos
+                férteis se tornaram áridos e erodidos.
+                A fúria dos deuses da natureza não tardou a se manifestar. Tempestades violentas assolaram a região,
+                colheitas falharam, e a fome se espalhou pelas ruas de Elisandria. O povo, desesperado e desiludido com a liderança do rei,
+                começou a imitar seus maus hábitos, devastando o que restava da beleza natural em torno da cidade. A magia que assolava o
+                local, não demoraria para se enegrecer.""");
         LogicaDoGame.aguardarUsuario();
         LogicaDoGame.espacoTexto(1);
-        System.out.println("Quando então, em meio à uma tempestade mágica que assolava sua humilde casa, você, " +
-                jogador.nome +  " se viu à beira da morte.\nRaios flamejantes rasgavam os céus, enquanto a fúria da terra tremia sob seus pés. " +
-                "Uma inundação repentina brotou do chão, arrastando-o para um redemoinho de água e lama. \n" +
-                "Quando tudo parecia perdido, uma luz incandescente irrompeu da escuridão, envolvendo-o em sua radiância.");
+        System.out.printf("""
+                Quando então, em meio à uma tempestade mágica que assolava sua humilde casa, você, %s se viu à beira da morte.
+                Raios flamejantes rasgavam os céus, enquanto a fúria da terra tremia sob seus pés.
+                Uma inundação repentina brotou do chão, arrastando-o para um redemoinho de água e lama.
+                Quando tudo parecia perdido, uma luz incandescente irrompeu da escuridão, envolvendo-o em sua radiância""", jogador.nome);
         LogicaDoGame.aguardarUsuario();
         LogicaDoGame.espacoTexto(1);
-        System.out.println("Ao abrir os olhos, você se vê em um lugar estranho e surreal.\n" +
-                "A tempestade mágica se dissipou, revelando um mundo em ruínas, marcado pela fúria dos elementos." +
-                " Mas, em meio à devastação, uma voz poderosa ecoou em sua mente:");
-        System.out.println("\t\t\t\t\t\"Você foi escolhido.\"");
+        System.out.println("""
+                Ao abrir os olhos, você se vê em um lugar estranho e surreal.
+                A tempestade mágica se dissipou, revelando um mundo em ruínas, marcado pela fúria dos elementos.
+                Mas, em meio à devastação, uma voz poderosa ecoou em sua mente:
+                                                "Você foi escolhido.\"""");
         LogicaDoGame.aguardarUsuario();
         LogicaDoGame.espacoTexto(2);
-        System.out.println("A voz era antiga e sábia, emanando de uma fonte invisível.\n " +
-                "Você se sentiu imbuído de uma nova força, um poder que pulsava em suas veias." +
-                " Ele ergueu as mãos, e os elementos se curvaram à sua vontade.\n");
+        System.out.println("""
+                A voz era antiga e sábia, emanando de uma fonte invisível.
+                Você se sentiu imbuído de uma nova força, um poder que pulsava em suas veias.
+                Ele ergueu as mãos, e os elementos se curvaram à sua vontade.""");
         LogicaDoGame.espacoTexto(1);
-        System.out.println("A terra tremeu sob seus pés, respondendo ao seu comando. " +
-                "Ele podia moldá-la com facilidade, criando montanhas e vales, abrindo fendas e erguendo muros de pedra.\n" +
-                "A água brotou de suas palmas, fluindo com a graça de um rio ou a fúria de uma cachoeira. \n" +
-                "Ele podia controlá-la em todas as suas formas, desde a brisa suave até o furacão devastador. \n" +
-                "O ar crepitava em torno dele, carregado com a energia elétrica dos raios. \n" +
-                "Ele podia conjurar tempestades e controlar o clima, trazendo chuva ou sol, paz ou destruição. \n" +
-                "O fogo dançava em suas mãos, quente e brilhante.\n" +
-                "Ele podia incendiar objetos com um mero pensamento ou criar labaredas flamejantes para defender-se ou iluminar seu caminho.");
+        System.out.println("""
+                A terra tremeu sob seus pés, respondendo ao seu comando.
+                Ele podia moldá-la com facilidade, criando montanhas e vales, abrindo fendas e erguendo muros de pedra.
+                A água brotou de suas palmas, fluindo com a graça de um rio ou a fúria de uma cachoeira.
+                Ele podia controlá-la em todas as suas formas, desde a brisa suave até o furacão devastador.
+                O ar crepitava em torno dele, carregado com a energia elétrica dos raios.
+                Ele podia conjurar tempestades e controlar o clima, trazendo chuva ou sol, paz ou destruição.
+                O fogo dançava em suas mãos, quente e brilhante.
+                Ele podia incendiar objetos com um mero pensamento ou criar labaredas flamejantes para defender-se ou iluminar seu caminho.""");
         LogicaDoGame.espacoTexto(1);
         System.out.println("Você havia sobrevivido ao acidente, mas não era mais o mesmo. Um ser imbuído de poder sobre a própria natureza.");
         LogicaDoGame.espacoTexto(1);
-        System.out.println("E então você soube, que era o único que poderia defender Elisandria do pior. \n" +
-                "\n\n" +
-                "\t\t\t\t\t\tSua jornada começa agora.");
+        System.out.println("""
+                E então você soube, que era o único que poderia defender Elisandria do pior.
+                                               Sua jornada começa agora.""");
         LogicaDoGame.aguardarUsuario();
     }
 
@@ -67,11 +73,14 @@ public class Historia{
         LogicaDoGame.separarPrint(30);
         System.out.println("Você abre os olhos novamente, se encontrando onde antes já foi o seu quarto. Aquilo definitivamente não era um sonho.");
         LogicaDoGame.aguardarUsuario();
-        System.out.println("Você olha para as suas mãos. Elas estavam brilhando em diversas cores! Você sentiu a terra tremer levemente ao dar o seu primeiro passo." +
-                "\nA água das poças parecia ser puxada como magnetismo diretamente para as suas mãos.");
+        System.out.println("""
+                Você olha para as suas mãos. Elas estavam brilhando em diversas cores! Você sentiu a terra tremer levemente ao dar o seu primeiro passo.
+                A água das poças parecia ser puxada como magnetismo diretamente para as suas mãos.""");
         LogicaDoGame.aguardarUsuario();
-        System.out.println("Há uma uma nova determinação em seu olhar ao observar o céu negro, coberto de nuvens que brilhavam um roxo mágico e maligno.\nA tempestade destruiria toda a cidade. Você sabia que não poderia deixar isso acontecer." +
-                "\nMas e quanto aos seus poderes? Como controlá-los? Como usá-los para proteger sua cidade e seu povo?");
+        System.out.println("""
+                Há uma uma nova determinação em seu olhar ao observar o céu negro, coberto de nuvens que brilhavam um roxo mágico e maligno.
+                A tempestade destruiria toda a cidade. Você sabia que não poderia deixar isso acontecer.
+                Mas e quanto aos seus poderes? Como controlá-los? Como usá-los para proteger sua cidade e seu povo?""");
         LogicaDoGame.aguardarUsuario();
         System.out.println("De repente, a voz poderosa ecoa em sua mente:");
         LogicaDoGame.espacoTexto(1);
@@ -178,9 +187,10 @@ public class Historia{
         LogicaDoGame.separarPrint(30);
         System.out.println("Parabens, " + jogador.nome + "! Você derrotou ***!");
         LogicaDoGame.separarPrint(30);
-        System.out.println("Esse jogo foi desenvolvido pelo grupo da APS, David, Marcelo, Airton, Parker e Carlinhos");
-        System.out.println("Para a APS de Lógica de Programação Orientada a Objetos do Prof. Veras");
-        System.out.println("Espero que você tenha gostado!");
+        System.out.println("""
+        Esse jogo foi desenvolvido pelo grupo da APS, David, Marcelo, Airton, Parker e Carlinhos
+        Para a APS de Lógica de Programação Orientada a Objetos do Prof. Veras
+        Espero que você tenha gostado!""");
     }
 
 }
