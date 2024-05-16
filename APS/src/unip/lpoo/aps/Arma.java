@@ -1,9 +1,9 @@
 package unip.lpoo.aps;
 
 public class Arma{
-    private int danoAtaque;
-    private String nomeArma, tipoArma;
-    private double chanceAcerto, chanceCritico;
+    private final int danoAtaque;
+    private final String nomeArma;
+    private final String tipoArma;
 
     public Arma(String nome, String tipo, int dano){
         this.nomeArma = nome;
