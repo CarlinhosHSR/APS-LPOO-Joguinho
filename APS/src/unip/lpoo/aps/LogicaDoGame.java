@@ -64,7 +64,7 @@ public class LogicaDoGame{
 
     // Método para o jogo aguardar o click do usuario para continuar
     public static void aguardarUsuario(){
-        System.out.println("\nPressione qualquer tecla para continuar...");
+        System.out.println("\nPressione qualquer tecla e o Enter para continuar...");
         leitura.next();
     }
 
@@ -738,10 +738,12 @@ public class LogicaDoGame{
                             jogadorMorreu();
                         }
                     }
-                } else {
+                }
+                else {
                     printarValor("Você não pode fugir de um Chefe!");
                     aguardarUsuario();
                 }
+
             }
         }
     }

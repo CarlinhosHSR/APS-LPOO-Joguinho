@@ -191,6 +191,8 @@ public class Historia{
         Esse jogo foi desenvolvido pelo grupo da APS, David, Marcelo, Airton, Parker e Carlinhos
         Para a APS de Lógica de Programação Orientada a Objetos do Prof. Veras
         Espero que você tenha gostado!""");
+        LogicaDoGame.aguardarUsuario();
     }
+
 
 }
