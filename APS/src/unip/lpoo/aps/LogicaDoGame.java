@@ -87,18 +87,19 @@ public class LogicaDoGame{
 
         // Pegando o nome do jogador
         do {
+            Scanner leituraEc = new Scanner(System.in);
             limpaConsole();
             printarValor("Qual é o seu nome?");
-            leitura.useDelimiter("\n");
-            nome = leitura.next();
+            leituraEc.useDelimiter("\n");
+            nome = leituraEc.next();
             // Perguntando o jogador se esse é o nome que ele(a) quer usar
             limpaConsole();
-            printarValor("Seu nome é " + nome + ".\nEsse é o seu nome?");
-                System.out.println("(1) Sim!");
-                System.out.println("(2) Não, quero mudar esse nome.");
-                int input = lerInt("-> ", 2);
-                if (input == 1)
-                    nameSet = true;
+            printarValor("Seu nome é " + nome + "\nEsse é o seu nome?");
+            System.out.println("(1) Sim!");
+            System.out.println("(2) Não, quero mudar esse nome.");
+            int input = lerInt("-> ", 2);
+            if (input == 1)
+                nameSet = true;
 
             if (nameSet) {
                 while ((forca + defesa) != 10) {
