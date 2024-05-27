@@ -138,12 +138,12 @@ public class Jogador extends Personagem implements Habilidades{
 
     @Override
     public int atacarComHabilidade(int atkUpgrade) {
-        return (int) 25 + (atkUpgrade * 2);
+        return (int) 13 + (atkUpgrade * 2);
     }
 
     @Override
     public void defendeComHabilidade(int defUpgrade) {
-        resistencia += 5 + defUpgrade;
+        resistencia += 3 + defUpgrade;
     }
 
 }
